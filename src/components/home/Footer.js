@@ -1,6 +1,10 @@
 import React from "react"
 import { Container, Row, Col, ListGroup } from "react-bootstrap"
 import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {} from '@fortawesome/free-solid-svg-icons'
+
+
 const Footer = () => {
     return (
         <>
@@ -48,7 +52,7 @@ const Footer = () => {
                                 variant="primary"
                                 href="https://www.instagram.com/nguyen_trong_/"
                             >
-                                <i className="icon-of-footer fa-brands fa-instagram">&nbsp;instagram</i>
+                                <i className="icon-of-footer fab fa-instagram">&nbsp;instagram</i>
                             </ListGroup.Item>
                         </ListGroup>
                     </Col>
