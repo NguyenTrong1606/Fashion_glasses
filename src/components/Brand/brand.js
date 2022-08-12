@@ -11,16 +11,20 @@ const FetchBrand =() =>{
         dispatch(fetchListBrand())
     }, [dispatch])
 
-    const getBrand = listBrand.map((brand, index) =>{
-        return(
-            <NavDropdown.Item href="#" key={index} style={{textTransfrom:'capitalize'}}>{brand.name_brand}</NavDropdown.Item>
-                
+    const getBrand = listBrand.map((brand) =>{
+        return(            
+            <NavDropdown.Item as={Link} to={`/product/brand/${brand.id_brand}`} key={brand.id_brand} style={{textTransfrom:'capitalize'}}>
+        
+                    {brand.name_brand}
+                      
+            </NavDropdown.Item>
+                            
         )
     })
     return (
         <>
             <Nav style={{backgroundColor:'#5d5555'}} className='dropdown-header'>
-                <NavDropdown title="DANH MỤC" className="basic-nav-dropdown">
+                <NavDropdown title="NHÃN HIỆU" className="basic-nav-dropdown">
                 {getBrand}
                 
                 </NavDropdown>

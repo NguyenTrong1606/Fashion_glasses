@@ -23,7 +23,7 @@ const ShowComment = () => {
     let comments = useSelector(commentSelector)
     // const commentStatus = comments.filter((comment) => comment.status === 0)
     const { id_product } = useParams()
-    // const [content, setContent] = useState("")
+    const [content, setContent] = useState("")
     // const [activeComment, setActiveComment] = useState(null)
     // const user = useSelector(userSelector)
 
@@ -131,10 +131,11 @@ const ShowComment = () => {
         <>
             {/* <ScrollToTop /> */}
             <Row>
-                <Col xl={10} lg={12} md={12} sm={12}>
+                <Col>
                     <h4>Bình luận</h4>
                     <div className="box-comments">
-                        {/* <form onSubmit={onSubmitComment}>
+                        {/* <form onSubmit={onSubmitComment}> */}
+                        <form>
                             <textarea
                                 type="text"
                                 className="write-comment col-xl-12 col-lg-12 col-md-12 col-sm-12"
@@ -146,8 +147,8 @@ const ShowComment = () => {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 style={{ height: "120px", minHeight: "100px", maxHeight: "300px", padding: "10px", margin: "10px 0px", border: "2px solid #ccc", borderRadius: "5px", borderSizing: "border-box" }}
-                            /> */}
-                            {/* <button
+                            />
+                            <button
                                 style={{
                                     
                                     fontSize: '20px',
@@ -157,19 +158,18 @@ const ShowComment = () => {
                                     border: 0,
                                     float: "right"
                                 }}
-                                onClick={onSubmitComment}
+                                // onClick={onSubmitComment}
                             >
                                 Bình luận
-                            </button> */}
+                            </button>
                             
-                        {/* </form> */}
+                        </form>
                         <br />
                         <br />
                         {comments.map((comment, index) => (
                             <div className="read-comment" key={index}>
                                 <Card
                                     style={{
-                                        width:'1000px !important',
                                         flexDirection: "row",
                                         border: "0",
                                         padding: "3px",
@@ -230,62 +230,51 @@ const ShowComment = () => {
                                                 </span>
                                             {/* )} */}
 
-                                            {/* <span className="d-flex comment-item-button">
-                                                {user.id_account !== 0 ? <><Button
+                                            <span className="d-flex comment-item-button">
+                                                {/* {user.id_account !== 0 ? <>  */}
+                                                <Button
                                                     variant="none"
-                                                    onClick={() =>
-                                                        setActiveComment({
-                                                            id_cmt_parent:
-                                                                comment.id_cmt_parent,
-                                                            type: "replying",
-                                                        })
-                                                    }
+                                                    // onClick={() =>
+                                                    //     setActiveComment({
+                                                    //         id_cmt_parent:
+                                                    //             comment.id_cmt_parent,
+                                                    //         type: "replying",
+                                                    //     })
+                                                    // }
                                                 >
                                                     <i className="far fa-comment-dots fa-x"></i>
-                                                </Button></> : <></>}
+                                                </Button>
+                                                {/* </> : <></>} */}
 
-                                                {user.id_account !== 0 && user.id_role < 3 && user.id_role < comment.id_role ?
-                                                    <>
-                                                        <Button variant="none">
-                                                            <i
-                                                                className={comment.status === 0 ? "fas fa-eye-slash fa-x" : "fas fa-eye fa-x"}
-                                                                onClick={() =>
-                                                                    hideCommentParent(
-                                                                        comment.id_cmt, comment.status
-                                                                    )
-                                                                }
-                                                            ></i>
-                                                        </Button>
-                                                    </>
-                                                    : <></>}
+                                                
 
-                                                {user.id_account ===
+                                                {/* {user.id_account ===
                                                     comment.id_account ? (
-                                                    <>
+                                                    <> */}
                                                         <Button
                                                             variant="none"
-                                                            onClick={() =>
-                                                                setActiveComment(
-                                                                    {
-                                                                        id_cmt: comment.id_cmt,
-                                                                        type: "editing",
-                                                                    }
-                                                                )
-                                                            }
+                                                            // onClick={() =>
+                                                            //     setActiveComment(
+                                                            //         {
+                                                            //             id_cmt: comment.id_cmt,
+                                                            //             type: "editing",
+                                                            //         }
+                                                            //     )
+                                                            // }
                                                         >
                                                             <i className="far fa-edit fa-x"></i>
                                                         </Button>
                                                         <Button variant="none">
                                                             <i
                                                                 className="far fa-trash-alt fa-x"
-                                                                onClick={() =>
-                                                                    deleteCommentParent(
-                                                                        comment.id_cmt
-                                                                    )
-                                                                }
+                                                                // onClick={() =>
+                                                                //     deleteCommentParent(
+                                                                //         comment.id_cmt
+                                                                //     )
+                                                                // }
                                                             ></i>
                                                         </Button>
-                                                    </>
+                                                    {/* </>
                                                 ) : user.id_role === 1 ? (
                                                     <Button variant="none">
                                                         <i
@@ -300,9 +289,9 @@ const ShowComment = () => {
                                                 ) : (
                                                     <></>
                                                 )}
+ */}
 
-
-                                            </span> */}
+                                            </span>
                                             {/* {isReplying &&
                                                 activeComment.id_cmt_parent ===
                                                 comment.id_cmt_parent && (
@@ -339,7 +328,7 @@ const ShowComment = () => {
                                     account_status={user.account_status}
                                 /> */}
                                 {comment.commentChildren.map((commentReply)=>(
-                                    <>
+                                    
                                         <div className="read-comment rep" key={commentReply.id_cmt}>
                                             <Card
                                                 style={{
@@ -455,7 +444,7 @@ const ShowComment = () => {
                                                 </Card.Body>
                                             </Card>
                                         </div>
-                                    </>
+                                    
                                 ))}
 
                                 <hr />

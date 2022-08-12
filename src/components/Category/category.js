@@ -11,9 +11,14 @@ const FetchCategory =() =>{
         dispatch(fetchListCategory())
     }, [dispatch])
 
-    const getCategory = listCategory.map((category, index) =>{
+    const getCategory = listCategory.map((category) =>{
         return(
-            <NavDropdown.Item href="#" key={index} style={{textTransfrom:'capitalize'}}>{category.name_category}</NavDropdown.Item>
+                
+                <NavDropdown.Item as={Link} to={`/product/category/${category.id_category}`} key={category.id_category}   style={{textTransfrom:'capitalize'}}>
+                    {category.name_category}
+            
+                    </NavDropdown.Item>
+                           
                 
         )
     })

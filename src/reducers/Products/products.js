@@ -12,7 +12,25 @@ export const fetchAllProduct = createAsyncThunk(
             )
             if (response.status === 200) {
                 return await {...response.data, status: response.status }
-                console.log(response.data)
+                
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
+export const fetchRamdomProduct = createAsyncThunk(
+    "products/ramdom",
+    async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:8000/api/v1/product/ramdom"
+            )
+            if (response.status === 200) {
+                return await {...response.data, status: response.status }
+                
             }
         } catch (error) {
             if (error.response.data) return error.response.data
@@ -27,6 +45,46 @@ export const searchProduct = createAsyncThunk(
         try {
             const response = await axios.get(
                 `http://localhost:8000/api/v1/product?k=${keyword}`
+            )
+            if (response.status === 200) {
+                return await {
+                    ...response.data,
+                    status: response.status,
+                }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
+export const loadProductByBrand = createAsyncThunk(
+    "product/brand",
+    async (id_brand) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/api/v1/product/brand/${id_brand}`
+            )
+            if (response.status === 200) {
+                return await {
+                    ...response.data,
+                    status: response.status,
+                }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
+export const loadProductByCategory = createAsyncThunk(
+    "product/catrgory",
+    async (id_category) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/api/v1/product/category/${id_category}`
             )
             if (response.status === 200) {
                 return await {
@@ -84,9 +142,30 @@ const products = createSlice({
                     toastError(action.payload.message)
                 }
             })
+            .addCase(loadProductByBrand.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.products = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
+            .addCase(loadProductByCategory.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.products = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
+            .addCase(fetchRamdomProduct.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.products = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
             .addCase(searchProduct.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
-                    state.searchProduct = action.payload.data
+                    state.products = action.payload.data
                 } else {
                 }
             })
@@ -105,7 +184,7 @@ const products = createSlice({
 const productReducer = products.reducer
 
 export const productsSelector = (state) => state.productReducer.products
-export const searchProductSelector = (state) => state.productReducer.searchProduct
+// export const searchProductSelector = (state) => state.productReducer.searchProduct
 export const productDetailSelector = (state) => state.productReducer.product
 
 

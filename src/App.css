@@ -416,3 +416,106 @@ select {
 		
 		}
 /* end Show product */
+/* start login */
+.landing {
+	position: relative;
+	background: url('./assets/lading3.jpg') no-repeat center center/cover;
+	height: 100vh;
+}
+
+.dark-overlay {
+	background-color: rgba(0, 0, 0, 0.5);
+	height: 100%;
+}
+
+.landing-inner {
+	height: 100%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.landing-inner form {
+	width: 600px;
+}
+
+@media (max-width: 600px) {
+	.landing-inner form {
+		width: 500px;
+	}
+}
+
+@media (max-width: 500px) {
+	.landing-inner form {
+		width: 80%;
+	}
+}
+
+.landing-inner h1,
+.landing-inner h2,
+.landing-inner h4,
+.landing-inner p {
+	color: white;
+}
+
+:root {
+	--main-color: #42BCFE;
+}
+
+.wapper {
+	/* min-width: 576px; */
+	background-color: #ccc;
+}
+
+.content {
+	position: relative;
+	display: block;
+}
+
+.content .img-logo {
+	width: 100%;
+	height: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-image: url(./assets/logo.png);
+	background-size: 100px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-origin: content-box;
+}
+
+.content .login-content {
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	height: 700px;
+	margin: 10px 0;
+	background-color: var(--main-color);
+	background-clip: content-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.login-content .bia-login {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 25%;
+	min-width: 480px;
+	height: 70%;
+	background-image: url(./assets/bia-login2.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-origin: content-box;
+}
+
+.form-check.form-check-inline {
+    font-size: 28px;
+	color: greenyellow;
+}
+
+/* end login */

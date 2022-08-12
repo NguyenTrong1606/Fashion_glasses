@@ -73,10 +73,10 @@ const Header = () =>{
                                 </Dropdown.Toggle>
                                 {/* {changeLoginToLogout} */}
                                 <Dropdown.Menu>
-                                    <Dropdown.Item >
+                                    <Dropdown.Item as={Link} to="/login">
                                         Đăng Nhập
                                     </Dropdown.Item>
-                                    <Dropdown.Item>
+                                    <Dropdown.Item as={Link} to="/register">
                                         Đăng ký
                                     </Dropdown.Item>
                                 </Dropdown.Menu>

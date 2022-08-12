@@ -8,6 +8,8 @@ import { Col, Container, Row,Button } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import ShowComment from "../Comment/ShowComment"
+import ShowReview from "../Review/ShowReview"
+import RamdomProduct from "./RamdomProduct"
 
 
     // const imgRef = React.createRef()
@@ -108,7 +110,9 @@ const ShowProduct = ()=>{
                         </Row>
                     </Col>
                 </Row>
+                <ShowReview />
                 <ShowComment/>
+                <RamdomProduct/>
             
 
             </Container>

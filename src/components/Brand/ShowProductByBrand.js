@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Header from "../home/Header"
 import Footer from "../home/Footer"
-import SliderCoverImage from "./SliderCoverImage"
+import SliderCoverImage from "../products/SliderCoverImage"
 import ReactPaginate from "react-paginate"
 import {
     Card,
@@ -16,19 +16,19 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import { searchProduct,productsSelector } from "../../reducers/Products/products"
+import { loadProductByBrand,productsSelector } from "../../reducers/Products/products"
 
-const SearchProduct= () => {
+const ShowProductByBrand= () => {
     
     const dispatch = useDispatch()
-    const { search } = useParams()
+    const { id_brand } = useParams()
     const products = useSelector(productsSelector)
     const [pageNumber, setPageNumber] = useState(0)
     const todoPerPage = 12
     const pagesVisited = pageNumber * todoPerPage
     useEffect(() => {
-        dispatch(searchProduct(search))
-    }, [dispatch, search])
+        dispatch(loadProductByBrand(id_brand))
+    }, [dispatch, id_brand])
 
     const pageCount = Math.ceil(products.length / todoPerPage)
 
@@ -130,4 +130,4 @@ const SearchProduct= () => {
 
 }
 
-export default SearchProduct
+export default ShowProductByBrand

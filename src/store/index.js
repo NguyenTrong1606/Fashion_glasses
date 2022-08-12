@@ -3,6 +3,7 @@ import productReducer from "../reducers/Products/products"
 import listCategoryReducer from "../reducers/Category/category"
 import listBrandReducer from "../reducers/Brand/brand"
 import commentReducer from "../reducers/Comment/comment"
+import reviewReducer from "../reducers/Review/review"
 
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
         listCategoryReducer,
         listBrandReducer,
         commentReducer,
+        reviewReducer,
         
     },
 })
