@@ -17,15 +17,19 @@ import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
 import { searchProduct,productsSelector } from "../../reducers/Products/products"
-
+import { loadUser, userSelector } from "../../reducers/Account/LoginForm" 
 const SearchProduct= () => {
     
     const dispatch = useDispatch()
     const { search } = useParams()
     const products = useSelector(productsSelector)
+    const user = useSelector(userSelector)
     const [pageNumber, setPageNumber] = useState(0)
     const todoPerPage = 12
     const pagesVisited = pageNumber * todoPerPage
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
     useEffect(() => {
         dispatch(searchProduct(search))
     }, [dispatch, search])
@@ -83,7 +87,15 @@ const SearchProduct= () => {
 
     return (
         <>
-        <Header/>
+        <Header full_name ={user.full_name}
+              email = {user.email}
+              phone_number = {user.phone_number}                         
+              identification = {user.identification}                        
+              date_of_birth  =  {user.date_of_birth}                    
+              address = {user.address}
+              avatar   ={user.avatar}
+              gender ={user.gender}
+              role ={user.role}/>
             <Container style={{ marginTop: '110px', minHeight: '85vh' }}>
                 <Row >
                     <SliderCoverImage />

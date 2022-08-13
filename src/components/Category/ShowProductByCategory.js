@@ -15,7 +15,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
-
+import { loadUser, userSelector } from "../../reducers/Account/LoginForm"
 import { loadProductByCategory,productsSelector } from "../../reducers/Products/products"
 
 const ShowProductByCategory= () => {
@@ -23,6 +23,11 @@ const ShowProductByCategory= () => {
     const dispatch = useDispatch()
     const { id_category } = useParams()
     const products = useSelector(productsSelector)
+    const user = useSelector(userSelector)
+
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
     const [pageNumber, setPageNumber] = useState(0)
     const todoPerPage = 12
     const pagesVisited = pageNumber * todoPerPage
@@ -83,7 +88,15 @@ const ShowProductByCategory= () => {
 
     return (
         <>
-        <Header/>
+        <Header full_name ={user.full_name}
+              email = {user.email}
+              phone_number = {user.phone_number}                         
+              identification = {user.identification}                        
+              date_of_birth  =  {user.date_of_birth}                    
+              address = {user.address}
+              avatar   ={user.avatar}
+              gender ={user.gender}
+              role ={user.role}/>
             <Container style={{ marginTop: '110px', minHeight: '85vh' }}>
                 <Row >
                     <SliderCoverImage />

@@ -53,11 +53,21 @@
 	margin-right: 5%;
 }
 
-.navbar #dropdown-basic1 {
+.navbar .dropdown-basic {
+	position: relative;
 	border-radius: 22px;
 	width: 44px;
 	height: 44px;
 	background-color: #146ebe;
+	/* border-color: #000; */
+}
+.navbar .dropdown-basic1 {
+	position: absolute;
+	border-radius: 22px;
+	width: 44px;
+	height: 44px;
+	top: 0px;
+  	left: 0px;
 	/* border-color: #000; */
 }
 .navbar-light .navbar-nav .nav-link {

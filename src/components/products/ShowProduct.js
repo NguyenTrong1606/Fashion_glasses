@@ -10,7 +10,7 @@ import { faCartShopping, faPlus, faMinus } from '@fortawesome/free-solid-svg-ico
 import ShowComment from "../Comment/ShowComment"
 import ShowReview from "../Review/ShowReview"
 import RamdomProduct from "./RamdomProduct"
-
+import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
 
     // const imgRef = React.createRef()
     // let index = 0
@@ -26,6 +26,11 @@ const ShowProduct = ()=>{
     const dispatch = useDispatch()
     const { id_product } = useParams()
     const product = useSelector(productDetailSelector)
+    const user = useSelector(userSelector)
+
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
     useEffect(()=>{
         dispatch(fetchProductId(id_product))
     },[dispatch,id_product])
@@ -70,7 +75,15 @@ const ShowProduct = ()=>{
     
     return (
         <>
-            <Header />
+            <Header full_name ={user.full_name}
+              email = {user.email}
+              phone_number = {user.phone_number}                         
+              identification = {user.identification}                        
+              date_of_birth  =  {user.date_of_birth}                    
+              address = {user.address}
+              avatar   ={user.avatar}
+              gender ={user.gender}
+              role ={user.role}/>
             <Container style={{ marginTop: '110px', minHeight: '85vh' }}>
                 <Row className="wrapper-show">
                     <Col lg={7} className="card-items">

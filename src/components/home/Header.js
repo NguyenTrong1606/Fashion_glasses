@@ -1,4 +1,4 @@
-import {React, useState } from 'react'
+import {React,useEffect, useState } from 'react'
 import {
     Navbar,
     Container,
@@ -9,23 +9,130 @@ import {
     NavDropdown,
     Nav
 } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
-import userAvatar from "../../assets/user.png"
 import glassesIcon from "../../assets/logo.png"
+import * as types from "../.././contains/types"
 import FetchCategory from '../Category/category'
 import FetchBand from '../Brand/brand'
+import { loadUser, setLogout } from '../../reducers/Account/LoginForm'
 
 
-
-const Header = () =>{
+const Header = ({
+    full_name,
+    email,
+    phone_number,
+    identification,
+    date_of_birth,
+    address,
+    avatar,
+    gender,
+    role,
+}
+) =>{
     const dispatch = useDispatch()
     const [search, setSearch] = useState("")
     const history = useNavigate()
+
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
+
     const onSubmitSearch = (event) => {
         event.preventDefault()
         history(`/search/${search}`)
     }
+    let changeLoginToLogout
+    if (localStorage[types.LOCAL_STORAGE_TOKEN_NAME]) {
+
+        if(role===0){
+            changeLoginToLogout = (
+                <>
+                    
+                    <Dropdown.Item
+                        as={Link}
+                        to={{
+                            pathname: "#",
+                            state: {
+                                full_name,
+                                email,
+                                phone_number,
+                                address,
+                                avatar,
+                                gender,
+                            },
+                        }}
+                    >
+                        Cập nhật thông tin
+                    </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/change/password">
+                        Thay đổi mật khẩu
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        as={Link}
+                        to="/"
+                        onClick={() => dispatch(setLogout())}
+                     >
+                        Đăng xuất
+                    </Dropdown.Item>
+                    
+                </>
+                )
+        }else{
+            changeLoginToLogout = (
+                <>
+                    
+                    <Dropdown.Item
+                        as={Link}
+                        to={{
+                            pathname: "#",
+                            state: {
+                                full_name,
+                                email,
+                                phone_number,
+                                identification,
+                                date_of_birth,
+                                address,
+                                avatar,
+                                gender,
+                            },
+                        }}
+                    >
+                        Cập nhật thông tin
+                    </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/change/password">
+                        Thay đổi mật khẩu
+                    </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/employee/home">
+                        Trang quản lý
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        as={Link}
+                        to="/"
+                        onClick={() => dispatch(setLogout())}
+                     >
+                            Đăng xuất
+                    </Dropdown.Item>
+                    
+                </>
+                )
+        }
+            
+    }
+    else {
+            changeLoginToLogout = (
+                <>
+                    <Dropdown.Item as={Link} to="/login">
+                        Đăng Nhập
+                    </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/register">
+                        Đăng ký
+                    </Dropdown.Item>
+                </>
+            )
+    }
+
+
     return (
         <>
             <Navbar expand="lg">
@@ -64,22 +171,31 @@ const Header = () =>{
                         </Nav>
                         <Nav className='topNav-right'>
                             <Dropdown>
-                                <Dropdown.Toggle
-                                    id="dropdown-basic1"
+                                {avatar === ""?
+                                    <Dropdown.Toggle
+                                    className="dropdown-basic1"
                                 >
                                     <span style={{ color: 'white' }}>
                                     <i className="fas fa-user-alt"></i>
                                     </span>
                                 </Dropdown.Toggle>
-                                {/* {changeLoginToLogout} */}
-                                <Dropdown.Menu>
-                                    <Dropdown.Item as={Link} to="/login">
-                                        Đăng Nhập
-                                    </Dropdown.Item>
-                                    <Dropdown.Item as={Link} to="/register">
-                                        Đăng ký
-                                    </Dropdown.Item>
+                                : 
+                                <Dropdown.Toggle className="dropdown-basic">
+                                    <img className="dropdown-basic1" src={avatar}></img>
+                                </Dropdown.Toggle>
+                                }
+                                {/* <Dropdown.Toggle
+                                    id="dropdown-basic1"
+                                >
+                                    <span style={{ color: 'white' }}>
+                                    <i className="fas fa-user-alt"></i>
+                                    </span>
+                                </Dropdown.Toggle> */}
+                                <Dropdown.Menu align={{ md: "end" }}>
+                                {changeLoginToLogout}
+                                
                                 </Dropdown.Menu>
+                                
                             </Dropdown>
                         </Nav>
 

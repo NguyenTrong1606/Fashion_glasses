@@ -3,19 +3,17 @@ import { Row, Col, Card, Image, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import {
-    // addCommentParent,
+    addCommentParent,
     commentSelector,
-    // deleteComment,
+    deleteComment,
     loadComments,
-    // addCommentChildren,
-    // updateComment,
-    // hidePresentlyComment,
+    addCommentChildren,
+    updateComment,
 } from "../../reducers/Comment/comment"
 import { useParams } from "react-router"
-// import { loadUser, userSelector } from "../../reducers/User/loginForm"
-// import ShowCommentChildren from "./ShowCommentChildren"
-// import CommentForm from "./CommentForm"
-// import { useLocation } from "react-router-dom"
+import { loadUser, userSelector } from "../../reducers/Account/LoginForm"
+import CommentForm from "./CommentForm"
+import { useLocation } from "react-router-dom"
 import { toastError } from "../.././Toast/Toast"
 
 const ShowComment = () => {
@@ -24,18 +22,18 @@ const ShowComment = () => {
     // const commentStatus = comments.filter((comment) => comment.status === 0)
     const { id_product } = useParams()
     const [content, setContent] = useState("")
-    // const [activeComment, setActiveComment] = useState(null)
-    // const user = useSelector(userSelector)
+    const [activeComment, setActiveComment] = useState(null)
+    const user = useSelector(userSelector)
 
     // if (user.id_account === 0 || user.id_role === 3) {
     //     comments = comments.filter((comment) => comment.status === 0)
     // }
 
-    // const isReplying = activeComment && activeComment.type === "replying"
-    // const isEditing = activeComment && activeComment.type === "editing"
+    const isReplying = activeComment && activeComment.type === "replying"
+    const isEditing = activeComment && activeComment.type === "editing"
 
     useEffect(() => {
-        // dispatch(loadUser())
+        dispatch(loadUser())
         dispatch(loadComments(id_product))
     }, [dispatch, id_product])
 
@@ -48,42 +46,39 @@ const ShowComment = () => {
 
     //     return null
     // }
-    // const onSubmitComment = (event) => {
-    //     event.preventDefault()
-    //     if (user.id_account === 0) {
-    //         toastError("Vui lòng đăng nhập để chat")
-    //         return
-    //     } else if (user.account_status !== 0) {
-    //         toastError("Tài khoản đã bị khóa, không thể chat!")
-    //         return
-    //     } else {
-    //         const comment = {
-    //             id_post,
-    //             content,
-    //         }
-    //         dispatch(addCommentParent(comment))
-    //         setContent("")
-    //     }
-    // }
-    // const deleteCommentParent = (id_cmt) => {
-    //     const comment = {
-    //         id_post,
-    //         id_cmt,
-    //     }
-    //     dispatch(deleteComment(comment))
-    // }
+    const onSubmitComment = (event) => {
+        event.preventDefault()
+        if (user.id_account === 0) {
+            toastError("Vui lòng đăng nhập để chat")
+            return
+        } else {
+            const comment = {
+                id_product,
+                content,
+            }
+            dispatch(addCommentParent(comment))
+            setContent("")
+        }
+    }
+    const delComment = (id_cmt) => {
+        const comment = {
+            id_product,
+            id_cmt,
+        }
+        dispatch(deleteComment(comment))
+    }
 
     // const hideCommentParent = (id_cmt, status) => {
     //     if (status === 0) {
     //         const comment = {
-    //             id_post,
+    //             id_product,
     //             id_cmt,
     //             new_status: 1
     //         }
     //         dispatch(hidePresentlyComment(comment))
     //     } else {
     //         const comment = {
-    //             id_post,
+    //             id_product,
     //             id_cmt,
     //             new_status: 0
     //         }
@@ -92,30 +87,26 @@ const ShowComment = () => {
 
     // }
 
-    // const addCmtChildren = (id_cmt_parent, content) => {
-    //     if (user.account_status !== 0) {
-    //         toastError("Tài khoản đã bị khóa, không thể chat!")
-    //         return
-    //     }
-    //     const comment = {
-    //         id_post,
-    //         id_cmt_parent,
-    //         content,
-    //     }
-    //     dispatch(addCommentChildren(comment))
-    // }
-    // const updateCommentParent = (id_cmt, content) => {
-    //     if (user.account_status !== 0) {
-    //         toastError("Tài khoản đã bị khóa, không thể chỉnh sửa chat!")
-    //         return
-    //     }
-    //     const comment = {
-    //         id_post,
-    //         id_cmt,
-    //         content,
-    //     }
-    //     dispatch(updateComment(comment))
-    // }
+    const addCmtChildren = (id_cmt_parent, content) => {
+        if (user.id_account === 0) {
+            toastError("Vui lòng đăng nhập để chat")
+            return
+        }
+        const comment = {
+            id_product,
+            id_cmt_parent,
+            content,
+        }
+        dispatch(addCommentChildren(comment))
+    }
+    const updateComment1 = (id_cmt, content) => {
+        const comment = {
+            id_product,
+            id_cmt,
+            content,
+        }
+        dispatch(updateComment(comment))
+    }
 
     const formatContent = (content) => {
         let arr = content.split("\n")
@@ -134,8 +125,7 @@ const ShowComment = () => {
                 <Col>
                     <h4>Bình luận</h4>
                     <div className="box-comments">
-                        {/* <form onSubmit={onSubmitComment}> */}
-                        <form>
+                        <form onSubmit={onSubmitComment}>
                             <textarea
                                 type="text"
                                 className="write-comment col-xl-12 col-lg-12 col-md-12 col-sm-12"
@@ -158,7 +148,7 @@ const ShowComment = () => {
                                     border: 0,
                                     float: "right"
                                 }}
-                                // onClick={onSubmitComment}
+                                onClick={onSubmitComment}
                             >
                                 Bình luận
                             </button>
@@ -197,13 +187,13 @@ const ShowComment = () => {
                                                 </span>
                                             </Card.Title>
                                         </Row>
-                                        <Card.Text
+                                        <div
                                             className="d-flex"
                                             style={{
                                                 flexDirection: "column",
                                             }}
                                         >
-                                            {/* {isEditing &&
+                                            {isEditing &&
                                                 activeComment.id_cmt ===
                                                 comment.id_cmt ? (
                                                 <CommentForm
@@ -212,75 +202,76 @@ const ShowComment = () => {
                                                     initialText={
                                                         comment.content
                                                     }
-                                                    handleSubmit={(content) =>
-                                                        updateCommentParent(
+                                                    handleSubmit={(content) =>{
+                                                        updateComment1(
                                                             comment.id_cmt,
                                                             content
                                                         )
+                                                        setActiveComment(null)}
                                                     }
                                                     handleCancel={() =>
                                                         setActiveComment(null)
                                                     }
                                                 />
-                                            ) : ( */}
+                                            ) : (
                                                 <span
                                                     style={{ fontSize: "18px" }}
                                                 >
                                                     {formatContent(comment.content)}
                                                 </span>
-                                            {/* )} */}
+                                            )}
 
                                             <span className="d-flex comment-item-button">
-                                                {/* {user.id_account !== 0 ? <>  */}
+                                                 {user.id_account !== 0 ? <> 
                                                 <Button
                                                     variant="none"
-                                                    // onClick={() =>
-                                                    //     setActiveComment({
-                                                    //         id_cmt_parent:
-                                                    //             comment.id_cmt_parent,
-                                                    //         type: "replying",
-                                                    //     })
-                                                    // }
+                                                    onClick={() =>
+                                                        setActiveComment({
+                                                            id_cmt:
+                                                            comment.id_cmt,
+                                                            type: "replying",
+                                                        })
+                                                    }
                                                 >
                                                     <i className="far fa-comment-dots fa-x"></i>
                                                 </Button>
-                                                {/* </> : <></>} */}
+                                                </> : <></>}
 
                                                 
 
-                                                {/* {user.id_account ===
-                                                    comment.id_account ? (
-                                                    <> */}
+                                                {user.id_account ===
+                                                    comment.account.id_account ? (
+                                                    <>
                                                         <Button
                                                             variant="none"
-                                                            // onClick={() =>
-                                                            //     setActiveComment(
-                                                            //         {
-                                                            //             id_cmt: comment.id_cmt,
-                                                            //             type: "editing",
-                                                            //         }
-                                                            //     )
-                                                            // }
+                                                            onClick={() =>
+                                                                setActiveComment(
+                                                                    {
+                                                                        id_cmt: comment.id_cmt,
+                                                                        type: "editing",
+                                                                    }
+                                                                )
+                                                            }
                                                         >
                                                             <i className="far fa-edit fa-x"></i>
                                                         </Button>
                                                         <Button variant="none">
                                                             <i
                                                                 className="far fa-trash-alt fa-x"
-                                                                // onClick={() =>
-                                                                //     deleteCommentParent(
-                                                                //         comment.id_cmt
-                                                                //     )
-                                                                // }
+                                                                onClick={() =>
+                                                                    delComment(
+                                                                        comment.id_cmt
+                                                                    )
+                                                                }
                                                             ></i>
                                                         </Button>
-                                                    {/* </>
-                                                ) : user.id_role === 1 ? (
+                                                     </>
+                                                ) : user.role !== 0 ? (
                                                     <Button variant="none">
                                                         <i
                                                             className="far fa-trash-alt 1x"
                                                             onClick={() =>
-                                                                deleteCommentParent(
+                                                                delComment(
                                                                     comment.id_cmt
                                                                 )
                                                             }
@@ -289,19 +280,18 @@ const ShowComment = () => {
                                                 ) : (
                                                     <></>
                                                 )}
- */}
 
                                             </span>
-                                            {/* {isReplying &&
-                                                activeComment.id_cmt_parent ===
-                                                comment.id_cmt_parent && (
+                                            {isReplying &&
+                                                activeComment.id_cmt ===
+                                                comment.id_cmt && (
                                                     <CommentForm
                                                         submitLabel="Reply"
                                                         handleSubmit={(
                                                             content
                                                         ) =>
                                                             addCmtChildren(
-                                                                comment.id_cmt_parent,
+                                                                comment.id_cmt,
                                                                 content
                                                             )
                                                         }
@@ -312,21 +302,10 @@ const ShowComment = () => {
                                                             )
                                                         }
                                                     />
-                                                )} */}
-                                        </Card.Text>
+                                                )}
+                                        </div>
                                     </Card.Body>
                                 </Card>
-
-                                {/* <ShowCommentChildren
-                                    id_cmt_parent={comment.id_cmt_parent}
-                                    id_cmt={comment.id_cmt}
-                                    isEditing={isEditing}
-                                    activeComment={activeComment}
-                                    setActiveComment={setActiveComment}
-                                    id_account={user.id_account}
-                                    id_role={user.id_role}
-                                    account_status={user.account_status}
-                                /> */}
                                 {comment.commentChildren.map((commentReply)=>(
                                     
                                         <div className="read-comment rep" key={commentReply.id_cmt}>
@@ -362,44 +341,33 @@ const ShowComment = () => {
                                                         className="d-flex"
                                                         style={{ flexDirection: "column" }}
                                                     >
-                                                        {/* {isEditing &&
-                                                            activecommentReply.id_cmt === commentReply.id_cmt ? (
+                                                        {isEditing &&
+                                                            activeComment.id_cmt === commentReply.id_cmt ? (
                                                             <CommentForm
                                                                 submitLabel="Update"
                                                                 hasCancelButton
                                                                 initialText={commentReply.content}
-                                                                handleSubmit={(content) =>
-                                                                    updateCommentChildren(
+                                                                handleSubmit={(content) =>{
+                                                                    updateComment1(
                                                                         commentReply.id_cmt,
                                                                         content
                                                                     )
+                                                                    setActiveComment(null)
+                                                                }
                                                                 }
                                                                 handleCancel={() =>
-                                                                    setActiveComment(false)
+                                                                    setActiveComment(null)
                                                                 }
                                                             />
-                                                        ) : ( */}
+                                                        ) : (
                                                             <span style={{ fontSize: "19px" }}>
                                                                 {formatContent(commentReply.content)}
                                                             </span>
-                                                        {/* )} */}
-                                                        {/* <span className="d-flex comment-item-button">
-                                                            {id_account !== 0 && id_role < 3 && id_role < commentReply.id_role ?
-                                                                <>
-                                                                    <Button variant="none">
-                                                                        <i
-                                                                            className={commentReply.status === 0 ? "fas fa-eye-slash fa-x" : "fas fa-eye fa-x"}
-                                                                            onClick={() =>
-                                                                                hideCommentChildren(
-                                                                                    commentReply.id_cmt, commentReply.status
-                                                                                )
-                                                                            }
-                                                                        ></i>
-                                                                    </Button>
-                                                                </>
-                                                                : <></>}
+                                                        )}
+                                                        <div className="d-flex comment-item-button">
+                                                
 
-                                                            {id_account === commentReply.id_account ? (
+                                                            {user.id_account === commentReply.account.id_account ? (
                                                                 <>
                                                                     <Button
                                                                         variant="none"
@@ -415,7 +383,7 @@ const ShowComment = () => {
                                                                     <Button
                                                                         variant="none"
                                                                         onClick={() =>
-                                                                            deleteCommentChildren(
+                                                                            delComment(
                                                                                 commentReply.id_cmt
                                                                             )
                                                                         }
@@ -423,13 +391,13 @@ const ShowComment = () => {
                                                                         <i className="far fa-trash-alt fa-x"></i>
                                                                     </Button>
                                                                 </>
-                                                            ) : id_role === 1 ? (
+                                                            ) : user.role !== 0 ? (
                                                                 <>
                                                                     <Button variant="none">
                                                                         <i
                                                                             className="far fa-trash-alt fa-x"
                                                                             onClick={() =>
-                                                                                deleteCommentChildren(
+                                                                                delComment(
                                                                                     commentReply.id_cmt
                                                                                 )
                                                                             }
@@ -439,7 +407,7 @@ const ShowComment = () => {
                                                             ) : (
                                                                 <></>
                                                             )}
-                                                        </span> */}
+                                                        </div>
                                                     </Card.Text>
                                                 </Card.Body>
                                             </Card>
