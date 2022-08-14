@@ -5,6 +5,7 @@ import listBrandReducer from "../reducers/Brand/brand"
 import commentReducer from "../reducers/Comment/comment"
 import reviewReducer from "../reducers/Review/review"
 import loginReducer from "../reducers/Account/LoginForm"
+import cartItemReducer from "../reducers/Cart/cart"
 
 
 const store = configureStore({
@@ -15,6 +16,7 @@ const store = configureStore({
         commentReducer,
         reviewReducer,
         loginReducer,
+        cartItemReducer,
         
     },
 })

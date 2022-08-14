@@ -34,6 +34,26 @@ export const loadStarReview = createAsyncThunk(
     }
 )
 
+export const addReview = createAsyncThunk(
+    "review/add",
+    async ({id_product,star_number,content}) => {
+        try {
+            const response = await axios.post(
+                `http://localhost:8000/api/v1/review/${id_product}`,
+                 {star_number,content}
+            )
+            if (response.status === 200) {
+                return await { ...response.data, status: response.status }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
+
+
 const listReview = createSlice({
     name: "listReview",
     initialState: {
@@ -69,6 +89,14 @@ const listReview = createSlice({
             .addCase(loadStarReview.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
                     state.numberStar = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
+            .addCase(addReview.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.listReview.unshift(action.payload.data)
+                    toastSuccess(action.payload.message)
                 } else {
                     toastError(action.payload.message)
                 }

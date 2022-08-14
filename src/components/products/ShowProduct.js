@@ -1,40 +1,45 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
 import { fetchProductId, productDetailSelector } from "../../reducers/Products/products"
 import Header from "../home/Header"
 import Footer from "../home/Footer"
-import { Col, Container, Row,Button } from "react-bootstrap"
+import { Col, Container, Row,Button, Form } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import ShowComment from "../Comment/ShowComment"
 import ShowReview from "../Review/ShowReview"
 import RamdomProduct from "./RamdomProduct"
 import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
+import { toastError, toastSuccess } from "../.././Toast/Toast"
+import { 
+    addItemCart,
+    updateItem,
+    loadItem,
+    cartItemSelector
+ } from "../../reducers/Cart/cart"
 
-    // const imgRef = React.createRef()
-    // let index = 0
-    // const handleTab = index =>{
-    //     this.setState({index: index})
-    //     const images = this.myRef.current.children;
-    //     for(let i=0; i<images.length; i++){
-    //       images[i].className = images[i].className.replace("active", "");
-    //     }
-    //     images[index].className = "active";
-    //   };
+    
 const ShowProduct = ()=>{
     const dispatch = useDispatch()
     const { id_product } = useParams()
     const product = useSelector(productDetailSelector)
     const user = useSelector(userSelector)
+    const [quantity, setQuantity] = useState(1)
+
+    const itemCart = useSelector(cartItemSelector)
 
     useEffect(() => {
+        
         dispatch(loadUser())
     }, [dispatch])
     useEffect(()=>{
+        dispatch(loadItem(id_product))
         dispatch(fetchProductId(id_product))
     },[dispatch,id_product])
     let discountPrice
+
+
     if(product.discount<=0){
         discountPrice =(
             <>
@@ -64,10 +69,51 @@ const ShowProduct = ()=>{
         images[index].className = "active";
       };
     
-    const upQuantity = (i)=>{  
-        let sl  = +quantityRef.current.value + i
-        if(0<sl && sl< product.quantity){
-            quantityRef.current.value = sl
+    const upQuantity = (i)=>{
+        if(itemCart){
+            const sl  =    +quantityRef.current.value + i
+            if(0<sl && sl<=(+product.quantity - +itemCart.quantity)){
+                quantityRef.current.value = sl
+                const sumQuantity = +quantityRef.current.value + itemCart.quantity
+                setQuantity(sumQuantity)
+            }
+            
+        }else{
+            const sl  = +quantityRef.current.value + i
+            if(0<sl && sl<= product.quantity){
+                quantityRef.current.value = sl
+                setQuantity(sl)
+            }
+            
+        }   
+        
+    }
+
+    const onSubmitAddCartItem = (event) => {
+        event.preventDefault()
+        if (user.id_account === 0) {
+            toastError("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng")
+            return
+        } else {
+            if(itemCart){
+                const sumQuantity = +quantity+itemCart.quantity
+                setQuantity(sumQuantity)
+                const item = {
+                    id_product,
+                    quantity
+                }
+                dispatch(updateItem(item))
+                setQuantity(1)
+            }
+            else{
+                const item = {
+                    id_product,
+                    quantity
+                }
+                dispatch(addItemCart(item))
+                setQuantity(1)
+            }
+            
         }
     }
 
@@ -75,6 +121,7 @@ const ShowProduct = ()=>{
     
     return (
         <>
+        
             <Header full_name ={user.full_name}
               email = {user.email}
               phone_number = {user.phone_number}                         
@@ -100,25 +147,54 @@ const ShowProduct = ()=>{
                     <Col lg={4} className="card-items" style={{flexDirection: 'column'}}>
                         <div className="slider-imgs mb-3">
                             <h5 className="card-title mb-4" style={{color: '#271111', fontSize: '30px', fontWeight: 600}}>{product.name_product}</h5>
+                            {product.quantity >0? 
+                            <h6>Có sẵn:&nbsp;{product.quantity}&nbsp;Sản phẩm</h6>:<h4 style={{color:'red', fontWeight:'800', textDecoration:'underline'}}>HẾT HÀNG</h4>
+                            }
                             <p>
                             {discountPrice}				 
                             </p>
                             <p style={{fontSize: '16px', marginTop: '5px'}}>Mô tả: {product.description}</p>
                         </div>
                         <Row className="btn-orders">	
-                            <Col lg={4} className="btn-quantity" style={{display: 'flex'}}> 
-                            <Button variant="secondary"  style={{border: '1px solid rgb(0 0 0/ 70%)', alignSelf: 'center'}}
-                                onClick={()=>upQuantity(-1)}
-                            ><FontAwesomeIcon icon={faMinus} /></Button>
-                            <input disabled type="text" id="QuantityProduct" defaultValue={1} min={1} max={product.quantity} inputMode="text" ref={quantityRef} style={{maxWidth: '48px', textAlign: 'center', height:'40px', fontSize: '16px', border: '1px solid rgb(0 0 0/ 90%)', alignSelf: 'center'}} />
-                            <Button  variant="secondary" style={{border: '1px solid rgb(0 0 0/ 70%)', alignSelf: 'center'}}
-                                onClick={()=>upQuantity(1)}
-                            ><FontAwesomeIcon icon={faPlus} /></Button>  			                           
-                            </Col>
-                            <Col lg={1}></Col>
-                            <Col lg={7}>
-                            <Button  style={{fontSize: '16px', fontWeight: 600, backgroundColor: 'Red', color: '#fff'}}> <FontAwesomeIcon icon={faCartShopping} /> Thêm vào giỏ hàng</Button>
-                            </Col>    
+                            {product.quantity <1?(
+                                   <Button disabled = 'true' style={{fontSize: '16px', fontWeight: 600, backgroundColor: 'gray', color: '#fff'}}> <FontAwesomeIcon icon={faCartShopping} /> Thêm vào giỏ hàng</Button>
+                            ): itemCart && itemCart.quantity === product.quantity?
+                            <>
+                                <Button disabled = 'true' style={{fontSize: '16px', fontWeight: 600, backgroundColor: 'gray', color: '#fff'}}> <FontAwesomeIcon icon={faCartShopping} /> Thêm vào giỏ hàng</Button>
+                                <h4 style={{color:'green', fontWeight:'800', textDecoration:'underline'}}>Sản phẩm này đã được bạn thêm số lượng tối đa trong giỏ hàng</h4>
+                            </>:
+                            <Form onSubmit={onSubmitAddCartItem} style={{display:'flex'}}>
+                                    
+                                    <Button variant="secondary"  style={{border: '1px solid rgb(0 0 0/ 70%)', alignSelf: 'center'}}
+                                        onClick={()=>upQuantity(-1)}
+                                    ><FontAwesomeIcon icon={faMinus} /></Button>
+                                    {/* <input disabled type="text" id="QuantityProduct" defaultValue={1} min={1} max={product.quantity} inputMode="text" ref={quantityRef} 
+                                    style={{maxWidth: '48px', textAlign: 'center', height:'40px', fontSize: '16px', border: '1px solid rgb(0 0 0/ 90%)', alignSelf: 'center'}} /> */}
+                                    <Form.Group>
+                                    <Form.Control disabled type='text'
+                                            defaultValue={1} 
+                                            min={1} 
+                                            max={product.quantity} 
+                                            inputMode="numeric"
+                                            ref={quantityRef}
+                                            require="true"
+                                            name="quantity"
+                                            style={{maxWidth: '48px', textAlign: 'center', height:'40px', fontSize: '16px', border: '1px solid rgb(0 0 0/ 90%)', alignSelf: 'center'}}
+  
+                                        />
+                                    </Form.Group>
+                                    <Button  variant="secondary" style={{border: '1px solid rgb(0 0 0/ 70%)', alignSelf: 'center'}}
+                                        onClick={()=>upQuantity(1)}
+                                    ><FontAwesomeIcon icon={faPlus} /></Button>  			                           
+                                    
+                                    <Button type="submit" style={{marginLeft:'15px',fontSize: '16px', fontWeight: 600, backgroundColor: 'Red', color: '#fff'}} > <FontAwesomeIcon icon={faCartShopping} /> Thêm vào giỏ hàng</Button>
+                                    
+
+                                </Form>
+                                
+                            }
+                            
+ 
                             		
                         </Row>
                     </Col>

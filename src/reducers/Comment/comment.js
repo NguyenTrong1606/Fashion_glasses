@@ -189,6 +189,13 @@ const comment = createSlice({
             })
             .addCase(updateComment.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
+                    for(let i=0; i<state.comments.length; i++){
+                        for(let j =0; j<state.comments[i].commentChildren.length;j++){
+                            if(state.comments[i].commentChildren[j].id_cmt ===action.payload.data.id_cmt) 
+                            state.comments[i].commentChildren[j] = action.payload.data
+
+                        }                       
+                    }
                     state.comments = state.comments.map(
                         (comment) => {
                             if (comment.id_cmt === action.payload.data.id_cmt) {
@@ -205,21 +212,6 @@ const comment = createSlice({
             .addCase(deleteComment.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
                     
-                    state.comments = state.comments.filter(
-                        (comment) =>
-                            comment.id_product !== action.payload.id_product &&
-                            comment.id_cmt !== action.payload.id_cmt
-                    )
-                    // state.comments = state.comments.map(
-                    //     (comment) => {
-                            
-                    //         comment.commentChildren = comment.commentChildren.filter(
-                    //             (cmtChildren)=>cmtChildren.id_cmt !== action.payload.id_cmt
-                    //         )
-                            
-                            
-                    //     }
-                    // )
                     for(let i=0; i<state.comments.length; i++){
                         state.comments[i].commentChildren = state.comments[i].commentChildren.filter(
                             (cmtChildren)=>cmtChildren.id_cmt !== action.payload.id_cmt

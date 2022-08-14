@@ -16,6 +16,8 @@ import * as types from "../.././contains/types"
 import FetchCategory from '../Category/category'
 import FetchBand from '../Brand/brand'
 import { loadUser, setLogout } from '../../reducers/Account/LoginForm'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCartShopping, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 
 
 const Header = ({
@@ -169,20 +171,25 @@ const Header = ({
                                 </span></Button>
                             </Form>
                         </Nav>
+
                         <Nav className='topNav-right'>
+                        {localStorage[types.LOCAL_STORAGE_TOKEN_NAME] ?
+                            <Button className="btn_cart" style={{ marginRight: '20px' }}><FontAwesomeIcon icon={faCartShopping} /></Button>:<></>
+                        }
                             <Dropdown>
-                                {avatar === ""?
-                                    <Dropdown.Toggle
-                                    className="dropdown-basic1"
+                                {console.log(avatar)}
+                                {avatar?
+                                <Dropdown.Toggle className="dropdown-basic">
+                                <img className="dropdown-basic1" src={avatar}></img>
+                                </Dropdown.Toggle>:
+                                <Dropdown.Toggle
+                                    className="dropdown-basic3"
                                 >
                                     <span style={{ color: 'white' }}>
                                     <i className="fas fa-user-alt"></i>
                                     </span>
                                 </Dropdown.Toggle>
-                                : 
-                                <Dropdown.Toggle className="dropdown-basic">
-                                    <img className="dropdown-basic1" src={avatar}></img>
-                                </Dropdown.Toggle>
+                                
                                 }
                                 {/* <Dropdown.Toggle
                                     id="dropdown-basic1"

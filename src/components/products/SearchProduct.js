@@ -106,7 +106,7 @@ const SearchProduct= () => {
                 </Row>
                 
             
-                {products.length !== 0?(
+                {pageCount>1?(
                     <div className="list-page">
                         <ReactPaginate
                             previousLabel={<i className="fa fa-chevron-left "></i>}

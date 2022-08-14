@@ -53,6 +53,14 @@
 	margin-right: 5%;
 }
 
+.navbar .dropdown-basic3 {
+	border-radius: 22px;
+	width: 44px;
+	height: 44px;
+	background-color: #146ebe;
+	/* border-color: #000; */
+}
+
 .navbar .dropdown-basic {
 	position: relative;
 	border-radius: 22px;
@@ -425,6 +433,17 @@ select {
 			font-size: 16px;
 		
 		}
+		/* review */
+		.starReview .form-check.form-check-inline {
+			font-size: 16px;
+			color: rgb(2, 2, 2);
+			line-height: 30px;
+			margin: 0 15px;
+		}
+		.starReview .form-check.form-check-inline .form-check-input{
+			font-size: 20px;
+		}
+
 /* end Show product */
 /* start login */
 .landing {

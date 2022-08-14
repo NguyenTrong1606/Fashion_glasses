@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from "react"
-import { Row, Col, Card, Image, Button } from "react-bootstrap"
+import { Row, Col, Card, Image, Button,Form } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { loadReview, reviewSelector, loadStarReview, starReviewSelector } from "../../reducers/Review/review"
+import ReactPaginate from "react-paginate"
+import { loadReview, reviewSelector, loadStarReview, starReviewSelector, addReview } from "../../reducers/Review/review"
 import { useParams } from "react-router"
 import { toastError } from "../.././Toast/Toast"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
 import Star from '../../assets/star.jpg'
+import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
 
 const ShowReview = ()=>{
     const dispatch = useDispatch()
     let reviews = useSelector(reviewSelector)
     let numberStar = useSelector(starReviewSelector)
     const { id_product } = useParams()
-    const [content, setContent] = useState("")
+    const [reviewForm, setReviewForm] = useState({
+        star_number: 0,
+        content :""
+    })
+    const [reviewActive, setReviewActice] = useState(null)
     
+    const user = useSelector(userSelector)
+    const [pageNumber, setPageNumber] = useState(0)
+    const todoPerPage = 9
+    const pagesVisited = pageNumber * todoPerPage
+    const pageCount = Math.ceil(reviews.length / todoPerPage)
 
     useEffect(() => {
+        dispatch(loadUser())
         dispatch(loadStarReview(id_product))
         dispatch(loadReview(id_product))
     }, [dispatch, id_product])
@@ -31,8 +41,28 @@ const ShowReview = ()=>{
         }
         return res
     }
+    const onSubmitReview = (event) => {
+        event.preventDefault()
+        if (user.id_account === 0) {
+            toastError("Vui lòng đăng nhập để chat")
+            return
+        } else {
+            const review = {
+                id_product: id_product,
+                star_number: star_number,
+                content: content
+            }
 
-    const listReview = reviews.map((review,index)=>{
+            dispatch(addReview(review))
+            setReviewForm({
+                    star_number:0,
+                    content :""
+            })
+        }
+    }
+    const {star_number, content} = reviewForm
+
+    const listReview = reviews.slice(pagesVisited, pagesVisited + todoPerPage).map((review,index)=>{
         return(
             <div className="read-comment" key={index}>
             <Card
@@ -84,12 +114,15 @@ const ShowReview = ()=>{
         )
         
     })
-
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    }
     return(
         <>
             <Row>
                 <Col>
                 <h4 style={{lineHeight:'40px'}}>Đánh giá {'&'} nhận xét</h4>
+                <div className="box-comments">
                     <Row>
                         <Col md={2}></Col>
                         <Col md={7} style={{
@@ -117,12 +150,158 @@ const ShowReview = ()=>{
                                     borderColor: "red",
                                     border: 0,
                                     float: "right"
-                                }}>Gửi đánh giá {'&'} nhận xét</Button>
+                                }}
+                                onClick={() =>
+                                    setReviewActice({
+                                        active: 0
+                                    })
+                                }
+
+                                >Gửi đánh giá {'&'} nhận xét</Button>
                         </Col>
                     </Row>
-                    <div className="box-comments">
-                        {listReview}
-                    </div>
+                    {reviewActive ?(
+                        <Form onSubmit={onSubmitReview}>
+                        
+                        <Form.Group className="mb-3 starReview" style={{textAlign: 'left'}}>
+                        <img img src={Star} width='30px' height='auto' style={{margin:'0 15px'}}></img>
+                                <Form.Check
+                                    inline
+                                    label="không Thích (1 Sao)"
+                                    name="start_number"
+                                    type="radio"
+                                    id={`inline-radio-1`}
+                                    value="1"
+                                    onChange={(e)=>setReviewForm({
+                                        ...reviewForm,
+                                        [e.target.name]: e.target.value
+                                    })}
+                                />
+                                <Form.Check
+                                    inline
+                                    label="Tạm được (2 Sao)"
+                                    name="star_number"
+                                    type="radio"
+                                    id={`inline-radio-2`}
+                                    value="2"
+                                    onChange={(e)=>setReviewForm({
+                                        ...reviewForm,
+                                        [e.target.name]: e.target.value
+                                    })}
+                                />
+                                <Form.Check
+                                    inline
+                                    label="Bình thường (3 Sao)"
+                                    name="star_number"
+                                    type="radio"
+                                    id={`inline-radio-3`}
+                                    value="3"
+                                    onChange={(e)=>setReviewForm({
+                                        ...reviewForm,
+                                        [e.target.name]: e.target.value
+                                    })}
+                                />
+                                <Form.Check
+                                    inline
+                                    label="Hài Lòng (4 Sao)"
+                                    name="star_number"
+                                    type="radio"
+                                    id={`inline-radio-2`}
+                                    value="4"
+                                    onChange={(e)=>setReviewForm({
+                                        ...reviewForm,
+                                        [e.target.name]: e.target.value
+                                    })}
+                                />
+                                <Form.Check
+                                    inline
+                                    label="Tuyệt vời (5 Sao)"
+                                    name="star_number"
+                                    type="radio"
+                                    id={`inline-radio-5`}
+                                    value="5"
+                                    onChange={(e)=>setReviewForm({
+                                        ...reviewForm,
+                                        [e.target.name]: e.target.value
+                                    })}
+                                />
+                        </Form.Group>
+
+                        <textarea
+                            type="text"
+                            className="write-comment col-xl-12 col-lg-12 col-md-12 col-sm-12"
+                            placeholder="Viết nhận xét..."
+                            name="content"
+                            onKeyPress={(e) => {
+                                e.key === "Enter" && e.preventDefault()
+                            }}
+                            value={reviewForm.content}
+                            onChange={(e)=>setReviewForm({
+                                ...reviewForm,
+                                [e.target.name]: e.target.value
+                            })}
+                            style={{ height: "120px", minHeight: "100px", maxHeight: "300px", padding: "10px", margin: "10px 0px", border: "2px solid #ccc", borderRadius: "5px", borderSizing: "border-box" }}
+                        />
+                        <Button
+                            style={{
+                                
+                                fontSize: '20px',
+                                borderRadius: "5px",
+                                backgroundColor: "#146ebe",
+                                borderColor: "#146ebe",
+                                border: 0,
+                                float: "right"
+                            }}
+                            type='submit'
+                        >
+                            gửi
+                        </Button>
+                        <Button
+                            style={{
+                                margin:'0 20px',
+                                fontSize: '20px',
+                                borderRadius: "5px",
+                                backgroundColor: "#146ebe",
+                                borderColor: "#146ebe",
+                                border: 0,
+                                float: "right"
+                            }}
+                            onClick={()=>setReviewActice(null)}
+                            
+                        >
+                            hủy
+                        </Button>
+                        </Form>
+                    ):<></>
+                    }
+                    <br/>
+                    <br/>
+
+                    
+                    {listReview}
+                    {pageCount > 1?
+                        <ReactPaginate
+                        previousLabel={<i className="fa fa-chevron-left "></i>}
+                        nextLabel={<i className="fa fa-chevron-right"></i>}
+                        pageCount ={pageCount}
+                        onPageChange={changePage}
+                        containerClassName={"pagination justify-content-center"}
+                        pageClassName={"page-item me-2"}
+                        pageLinkClassName={"page-link"}
+                        previousClassName={"page-item me-2"}
+                        previousLinkClassName={"page-link"}
+                        nextClassName={"page-item"}
+                        nextLinkClassName={"page-link"}
+                        breakClassName={"page-item me-2"}
+                        breakLinkClassName={"page-link"}
+                        disabledClassName={"paginationDisabled"}
+                        activeClassName={"active"}
+                        marginPagesDisplayed={1}
+                        pageRangeDisplayed={2}
+                    />:<></>
+                    }
+                    
+                </div>
                 </Col>
             </Row>
         </>

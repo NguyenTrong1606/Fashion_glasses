@@ -9,7 +9,7 @@ const FetchProduct= () => {
     const products = useSelector(productsSelector)
     const dispatch = useDispatch()
     const [pageNumber, setPageNumber] = useState(0)
-    const todoPerPage = 9
+    const todoPerPage = 12
     const pagesVisited = pageNumber * todoPerPage
     useEffect(() => {
         dispatch(fetchAllProduct())
@@ -76,7 +76,7 @@ const FetchProduct= () => {
                 </Row>
                 
             
-
+            {pageCount > 1?
             <ReactPaginate
                     previousLabel={<i className="fa fa-chevron-left "></i>}
                     nextLabel={<i className="fa fa-chevron-right"></i>}
@@ -95,8 +95,8 @@ const FetchProduct= () => {
                     activeClassName={"active"}
                     marginPagesDisplayed={1}
                     pageRangeDisplayed={2}
-                />
-
+                />:<></>
+            }
             </Row>
         </>
     )

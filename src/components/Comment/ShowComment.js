@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Row, Col, Card, Image, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import ReactPaginate from "react-paginate"
 import {
     addCommentParent,
     commentSelector,
@@ -24,6 +25,11 @@ const ShowComment = () => {
     const [content, setContent] = useState("")
     const [activeComment, setActiveComment] = useState(null)
     const user = useSelector(userSelector)
+
+    const [pageNumber, setPageNumber] = useState(0)
+    const todoPerPage = 9
+    const pagesVisited = pageNumber * todoPerPage
+    const pageCount = Math.ceil(comments.length / todoPerPage)
 
     // if (user.id_account === 0 || user.id_role === 3) {
     //     comments = comments.filter((comment) => comment.status === 0)
@@ -118,6 +124,9 @@ const ShowComment = () => {
         return res
     }
 
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    }
     return (
         <>
             {/* <ScrollToTop /> */}
@@ -156,7 +165,7 @@ const ShowComment = () => {
                         </form>
                         <br />
                         <br />
-                        {comments.map((comment, index) => (
+                        {comments.slice(pagesVisited, pagesVisited + todoPerPage).map((comment, index) => (
                             <div className="read-comment" key={index}>
                                 <Card
                                     style={{
@@ -266,20 +275,7 @@ const ShowComment = () => {
                                                             ></i>
                                                         </Button>
                                                      </>
-                                                ) : user.role !== 0 ? (
-                                                    <Button variant="none">
-                                                        <i
-                                                            className="far fa-trash-alt 1x"
-                                                            onClick={() =>
-                                                                delComment(
-                                                                    comment.id_cmt
-                                                                )
-                                                            }
-                                                        ></i>
-                                                    </Button>
-                                                ) : (
-                                                    <></>
-                                                )}
+                                                ): <></>}
 
                                             </span>
                                             {isReplying &&
@@ -391,22 +387,9 @@ const ShowComment = () => {
                                                                         <i className="far fa-trash-alt fa-x"></i>
                                                                     </Button>
                                                                 </>
-                                                            ) : user.role !== 0 ? (
-                                                                <>
-                                                                    <Button variant="none">
-                                                                        <i
-                                                                            className="far fa-trash-alt fa-x"
-                                                                            onClick={() =>
-                                                                                delComment(
-                                                                                    commentReply.id_cmt
-                                                                                )
-                                                                            }
-                                                                        ></i>
-                                                                    </Button>
-                                                                </>
-                                                            ) : (
+                                                            ) : 
                                                                 <></>
-                                                            )}
+                                                            }
                                                         </div>
                                                     </Card.Text>
                                                 </Card.Body>
@@ -418,6 +401,27 @@ const ShowComment = () => {
                                 <hr />
                             </div>
                         ))}
+                        {pageCount > 1?
+                        <ReactPaginate
+                            previousLabel={<i className="fa fa-chevron-left "></i>}
+                            nextLabel={<i className="fa fa-chevron-right"></i>}
+                            pageCount ={pageCount}
+                            onPageChange={changePage}
+                            containerClassName={"pagination justify-content-center"}
+                            pageClassName={"page-item me-2"}
+                            pageLinkClassName={"page-link"}
+                            previousClassName={"page-item me-2"}
+                            previousLinkClassName={"page-link"}
+                            nextClassName={"page-item"}
+                            nextLinkClassName={"page-link"}
+                            breakClassName={"page-item me-2"}
+                            breakLinkClassName={"page-link"}
+                            disabledClassName={"paginationDisabled"}
+                            activeClassName={"active"}
+                            marginPagesDisplayed={1}
+                            pageRangeDisplayed={2}
+                        />:<></>
+                        }
                     </div>
                 </Col>
             </Row>
