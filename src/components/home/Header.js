@@ -174,7 +174,7 @@ const Header = ({
 
                         <Nav className='topNav-right'>
                         {localStorage[types.LOCAL_STORAGE_TOKEN_NAME] ?
-                            <Button className="btn_cart" style={{ marginRight: '20px' }}><FontAwesomeIcon icon={faCartShopping} /></Button>:<></>
+                            <Button className="btn_cart" style={{ marginRight: '20px' }} onClick={()=>history('/cart')}><FontAwesomeIcon icon={faCartShopping} /></Button>:<></>
                         }
                             <Dropdown>
                                 {console.log(avatar)}

@@ -54,7 +54,7 @@ export const addItemCart = createAsyncThunk(
 )
 export const deleteItem = createAsyncThunk(
     "item/delete",
-    async ({ id_product }) => {
+    async (id_product) => {
         try {
             const response = await axios.delete(
                 `http://localhost:8000/api/v1/cart/${id_product}/delete`
@@ -132,6 +132,7 @@ const cartItem = createSlice({
     
             .addCase(addItemCart.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
+                    state.item = action.payload.data
                     toastSuccess(action.payload.message)    
                 } else {
                     toastError(action.payload.message)
@@ -149,6 +150,7 @@ const cartItem = createSlice({
                             
                         }
                     )
+                    state.item = action.payload.data
                     toastSuccess(action.payload.message) 
                 } else {
                     toastError(action.payload.message)

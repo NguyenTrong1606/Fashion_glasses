@@ -8,6 +8,7 @@ import ShowProductByBrand from "./components/Brand/ShowProductByBrand"
 import ShowProductByCategory from "./components/Category/ShowProductByCategory"
 import RegisterForm from "./components/Customer/RegisterForm"
 import LoginForm from "./components/Customer/LoginForm"
+import ShowCart from "./components/Cart/cart"
 const routers = [
     {
         path: "/",
@@ -55,6 +56,12 @@ const routers = [
         exact: false,
         main: () => <LoginForm/>,
     },
+    {
+        path: "/cart",
+        exact: false,
+        main: () => <ShowCart/>,
+    },
+
 
 ]
 

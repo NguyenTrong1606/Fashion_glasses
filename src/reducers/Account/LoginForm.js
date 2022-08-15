@@ -22,6 +22,24 @@ export const loadUser = createAsyncThunk("login/user", async () => {
     }
 })
 
+export const updateAddressUser = createAsyncThunk(
+    "account/update/address",
+    async (address) => {
+        try {
+            const response = await axios.put(
+                `http://localhost:8000/api/v1/account/change-address`,
+                { address }
+            )
+            if (response.status === 200) {
+                return await { ...response.data, status: response.status }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
 const loginForm = createSlice({
     name: "login",
     initialState: {
@@ -66,11 +84,20 @@ const loginForm = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(loadUser.fulfilled, (state, action) => {
-
                 state.account = action.payload.data
                 state.isAuthenticated = action.payload.isAuthenticated
-
         })
+        builder.addCase(updateAddressUser.fulfilled, (state, action) => {
+            if(action.payload.status === 200){
+                state.account = action.payload.data
+                state.isAuthenticated = action.payload.isAuthenticated
+                toastSuccess(action.payload.message)
+            }
+            else{
+                toastError(action.payload.message)
+            }
+            
+    })
     },
 })
 

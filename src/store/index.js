@@ -6,6 +6,8 @@ import commentReducer from "../reducers/Comment/comment"
 import reviewReducer from "../reducers/Review/review"
 import loginReducer from "../reducers/Account/LoginForm"
 import cartItemReducer from "../reducers/Cart/cart"
+import voucherReducer from "../reducers/Voucher/voucher"
+import ordersReducer from "../reducers/Orders/orders"
 
 
 const store = configureStore({
@@ -17,6 +19,8 @@ const store = configureStore({
         reviewReducer,
         loginReducer,
         cartItemReducer,
+        voucherReducer,
+        ordersReducer,
         
     },
 })

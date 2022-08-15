@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
-import { fetchProductId, productDetailSelector } from "../../reducers/Products/products"
+import { fetchProductId, productDetailSelector,fetchAllProduct, productsSelector } from "../../reducers/Products/products"
 import Header from "../home/Header"
 import Footer from "../home/Footer"
 import { Col, Container, Row,Button, Form } from "react-bootstrap"
@@ -22,15 +22,16 @@ import {
     
 const ShowProduct = ()=>{
     const dispatch = useDispatch()
+    const listProduct = useSelector(productsSelector)
     const { id_product } = useParams()
     const product = useSelector(productDetailSelector)
     const user = useSelector(userSelector)
-    const [quantity, setQuantity] = useState(1)
+    var quantity = 1
 
     const itemCart = useSelector(cartItemSelector)
 
     useEffect(() => {
-        
+        dispatch(fetchAllProduct())
         dispatch(loadUser())
     }, [dispatch])
     useEffect(()=>{
@@ -73,16 +74,17 @@ const ShowProduct = ()=>{
         if(itemCart){
             const sl  =    +quantityRef.current.value + i
             if(0<sl && sl<=(+product.quantity - +itemCart.quantity)){
-                quantityRef.current.value = sl
-                const sumQuantity = +quantityRef.current.value + itemCart.quantity
-                setQuantity(sumQuantity)
+                quantity = sl
+                quantityRef.current.value = quantity
+                
             }
             
         }else{
             const sl  = +quantityRef.current.value + i
             if(0<sl && sl<= product.quantity){
-                quantityRef.current.value = sl
-                setQuantity(sl)
+                quantity = sl
+                quantityRef.current.value = quantity
+                
             }
             
         }   
@@ -96,14 +98,17 @@ const ShowProduct = ()=>{
             return
         } else {
             if(itemCart){
-                const sumQuantity = +quantity+itemCart.quantity
-                setQuantity(sumQuantity)
+                quantity = +quantity + itemCart.quantity
+
                 const item = {
                     id_product,
                     quantity
                 }
                 dispatch(updateItem(item))
-                setQuantity(1)
+
+                console.log(quantity)
+                
+                
             }
             else{
                 const item = {
@@ -111,8 +116,12 @@ const ShowProduct = ()=>{
                     quantity
                 }
                 dispatch(addItemCart(item))
-                setQuantity(1)
             }
+
+            quantity = 1
+            console.log(quantity)
+
+            quantityRef.current.value = 1
             
         }
     }
@@ -147,8 +156,11 @@ const ShowProduct = ()=>{
                     <Col lg={4} className="card-items" style={{flexDirection: 'column'}}>
                         <div className="slider-imgs mb-3">
                             <h5 className="card-title mb-4" style={{color: '#271111', fontSize: '30px', fontWeight: 600}}>{product.name_product}</h5>
-                            {product.quantity >0? 
-                            <h6>Có sẵn:&nbsp;{product.quantity}&nbsp;Sản phẩm</h6>:<h4 style={{color:'red', fontWeight:'800', textDecoration:'underline'}}>HẾT HÀNG</h4>
+                            {product.quantity<1? 
+                            <h4 style={{color:'red', fontWeight:'800', textDecoration:'underline'}}>HẾT HÀNG</h4>                            
+                            :itemCart && +product.quantity - itemCart.quantity >0? <h6>Có sẵn:&nbsp;{+product.quantity - itemCart.quantity}&nbsp;Sản phẩm</h6>
+                            :itemCart && +product.quantity - itemCart.quantity <=0?<></>
+                            :<h6>Có sẵn:&nbsp;{product.quantity }&nbsp;Sản phẩm</h6>
                             }
                             <p>
                             {discountPrice}				 
@@ -168,8 +180,6 @@ const ShowProduct = ()=>{
                                     <Button variant="secondary"  style={{border: '1px solid rgb(0 0 0/ 70%)', alignSelf: 'center'}}
                                         onClick={()=>upQuantity(-1)}
                                     ><FontAwesomeIcon icon={faMinus} /></Button>
-                                    {/* <input disabled type="text" id="QuantityProduct" defaultValue={1} min={1} max={product.quantity} inputMode="text" ref={quantityRef} 
-                                    style={{maxWidth: '48px', textAlign: 'center', height:'40px', fontSize: '16px', border: '1px solid rgb(0 0 0/ 90%)', alignSelf: 'center'}} /> */}
                                     <Form.Group>
                                     <Form.Control disabled type='text'
                                             defaultValue={1} 
@@ -178,7 +188,7 @@ const ShowProduct = ()=>{
                                             inputMode="numeric"
                                             ref={quantityRef}
                                             require="true"
-                                            name="quantity"
+                                            value={quantity}
                                             style={{maxWidth: '48px', textAlign: 'center', height:'40px', fontSize: '16px', border: '1px solid rgb(0 0 0/ 90%)', alignSelf: 'center'}}
   
                                         />

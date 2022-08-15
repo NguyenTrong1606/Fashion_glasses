@@ -548,3 +548,10 @@ select {
 }
 
 /* end login */
+
+/* start cart */
+td,th{
+	border: none;
+	line-height: 100px;
+}
+/* end cart */
