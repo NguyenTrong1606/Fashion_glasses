@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { toastError, toastSuccess } from "../.././Toast/Toast"
 import { registerUser } from "../../utils/callerAPI"
-import { useNavigate, Link } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import { Form, Button } from "react-bootstrap"
 
 
@@ -17,7 +17,7 @@ const RegisterForm = () => {
         confirm: "",
     })
 
-    const history = useNavigate()
+    const history = useHistory()
 
     const onChangeRegister = (event) => {
         setRegisterForm({
@@ -43,7 +43,7 @@ const RegisterForm = () => {
                 const registerData = await registerUser(register)
                 if (registerData.status) {
                     toastSuccess(registerData.message)
-                    history("/login")
+                    history.push("/login")
                 } else {
                     toastError(registerData.message)
                 }

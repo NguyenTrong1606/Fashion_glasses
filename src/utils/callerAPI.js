@@ -35,4 +35,65 @@ export const loginUser = async (loginForm) => {
     }
 }
 
+export const updateinforCustomer = async (updateForm) => {
+    try {
+        const response = await axios.put(
+            `http://localhost:8000/api/v1/customer/change-infor`,
+            updateForm
+        )
+        if (response.status === 200) {
+            return await { ...response.data, status: response.status }
+        }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+
+export const updateinforEmployee = async (updateForm) => {
+    try {
+        const response = await axios.put(
+            `http://localhost:8000/api/v1/Employee/change-infor`,
+            updateForm
+        )
+        if (response.status === 200) {
+            return await { ...response.data, status: response.status }
+        }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+
+export const changePassword = async (data) => {
+    try {
+        const new_password = data.new_password
+        const old_password = data.old_password
+        const response = await axios.put(
+            `http://localhost:8000/api/v1/account/change/password`,
+            { new_password, old_password }
+        )
+        if (response.status === 200) {
+            return await { ...response.data, status: response.status }
+        }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+
+export const loadAccountId = async (id_account) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8000/api/v1/account/${id_account}`,
+        )
+        if (response.status === 200) {
+            return await { ...response.data, status: response.status }
+        }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+
 

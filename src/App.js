@@ -1,6 +1,6 @@
 import React from "react"
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import routers from "./routers"
 import { ToastContainer } from "react-toastify"
 import HomePage from "./components/home/HomePage";
@@ -17,11 +17,11 @@ function App() {
                 path={router.path}
                 exact={router.exact}
                 render={router.render}
-                element={router.main()}
+                component={router.main}
             />       
         )
     })
-    return <Routes>{result}</Routes>
+    return <Switch>{result}</Switch>
   }
 
   return (

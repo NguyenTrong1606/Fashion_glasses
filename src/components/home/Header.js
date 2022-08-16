@@ -10,7 +10,7 @@ import {
     Nav
 } from "react-bootstrap"
 import { useDispatch } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import glassesIcon from "../../assets/logo.png"
 import * as types from "../.././contains/types"
 import FetchCategory from '../Category/category'
@@ -34,7 +34,7 @@ const Header = ({
 ) =>{
     const dispatch = useDispatch()
     const [search, setSearch] = useState("")
-    const history = useNavigate()
+    const history = useHistory()
 
     useEffect(() => {
         dispatch(loadUser())
@@ -42,7 +42,7 @@ const Header = ({
 
     const onSubmitSearch = (event) => {
         event.preventDefault()
-        history(`/search/${search}`)
+        history.push(`/search/${search}`)
     }
     let changeLoginToLogout
     if (localStorage[types.LOCAL_STORAGE_TOKEN_NAME]) {
@@ -54,7 +54,7 @@ const Header = ({
                     <Dropdown.Item
                         as={Link}
                         to={{
-                            pathname: "#",
+                            pathname: "/update/customer",
                             state: {
                                 full_name,
                                 email,
@@ -87,7 +87,7 @@ const Header = ({
                     <Dropdown.Item
                         as={Link}
                         to={{
-                            pathname: "#",
+                            pathname: "/update/employee",
                             state: {
                                 full_name,
                                 email,
@@ -141,12 +141,14 @@ const Header = ({
             <Container fluid>
                     <Navbar.Brand>
                         <label htmlFor='nav-mobile-input'>
+                        <Link to="/">
                             <img
                                 className="title"
                                 src={glassesIcon}
                                 alt="glassesIcon"
                                 style={{ width: '60px', height: '60px' }}
                             />
+                        </Link>
                         </label>
                     </Navbar.Brand>
                         
@@ -174,7 +176,7 @@ const Header = ({
 
                         <Nav className='topNav-right'>
                         {localStorage[types.LOCAL_STORAGE_TOKEN_NAME] ?
-                            <Button className="btn_cart" style={{ marginRight: '20px' }} onClick={()=>history('/cart')}><FontAwesomeIcon icon={faCartShopping} /></Button>:<></>
+                            <Button className="btn_cart" style={{ marginRight: '20px' }} onClick={()=>history.push('/cart')}><FontAwesomeIcon icon={faCartShopping} /></Button>:<></>
                         }
                             <Dropdown>
                                 {console.log(avatar)}

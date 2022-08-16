@@ -18,6 +18,40 @@ export const loadVoucherAccount = createAsyncThunk(
     }
 )
 
+export const loadAllVoucherAccount = createAsyncThunk(
+    "voucher-account/all",
+    async () => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/api/v1/voucher/my-voucher/all`
+            )
+            if (response.status === 200) {
+                return await { ...response.data, status: response.status }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
+export const loadAllVoucher= createAsyncThunk(
+    "voucher/all",
+    async () => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/api/v1/voucher/all`
+            )
+            if (response.status === 200) {
+                return await { ...response.data, status: response.status }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
 const Voucher = createSlice({
     name: "voucher",
     initialState: {
@@ -27,6 +61,20 @@ const Voucher = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loadVoucherAccount.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.vouchers = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
+            .addCase(loadAllVoucherAccount.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.vouchers = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
+            .addCase(loadAllVoucher.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
                     state.vouchers = action.payload.data
                 } else {

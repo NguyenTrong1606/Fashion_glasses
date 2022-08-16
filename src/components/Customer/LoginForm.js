@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { loginUser } from "../.././utils/callerAPI"
 import { toastError, toastSuccess } from "../.././Toast/Toast"
-import { useNavigate } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { Form, Button } from "react-bootstrap"
 
 const LoginForm = () => {
@@ -11,7 +11,7 @@ const LoginForm = () => {
         password: "",
     })
 
-    const history = useNavigate()
+    const history = useHistory()
 
     const onChangeLogin = (event) => {
         setLoginForm({
@@ -25,7 +25,7 @@ const LoginForm = () => {
             const loginData = await loginUser(loginForm)
             if (loginData.status === 200) {
                 toastSuccess(loginData.message)
-                history("/")
+                history.push("/")
             } else {
                 toastError(loginData.message)
             }

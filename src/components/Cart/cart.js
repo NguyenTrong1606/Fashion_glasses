@@ -17,7 +17,7 @@ import {
     loadItems,
     listItemsSelector
  } from "../../reducers/Cart/cart"
- import { useNavigate } from "react-router-dom"
+ import { useHistory } from "react-router-dom"
 
 
 
@@ -39,7 +39,7 @@ import {
     const [voucherForm, setVoucherForm] = useState({
       id_voucher : 0 
     })
-    const history = useNavigate()
+    const history = useHistory()
 
     var tongTien = 0
 
@@ -145,7 +145,8 @@ import {
 
       dispatch(addOrder({id_voucher,address}))
       dispatch(loadItems())
-      history("/")
+      history.push("/account/orders")
+
     }
 
 
@@ -164,6 +165,14 @@ import {
                 gender ={user.gender}
                 role ={user.role}/>
         <Container fluid style={{ margin: '110px 20px 10px', minHeight: '85vh' }}>
+        <Row className="d-flex flex-row">
+          <div style={{flex:'9'}}></div>
+          <Button variant="success" style={{flex:'1', color:'white', margin:'0 40px'}}
+            onClick={() =>
+              history.push('/account/my-order')
+            }
+          >Danh Sách Đơn Hàng</Button>
+        </Row>
         <Row style={{marginTop: '30px'}}>
 
         <Col md ={3} className="panel panel-danger" style={{border:'green solid 1px', padding:'10px'}}>
@@ -275,7 +284,10 @@ import {
               <h4 style={{flex:'1', color:'red'}}>{(+tongTien-giamGia).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</h4>
             </div>
 
-            <Button type="submit" variant="danger" style={{width:'200px', margin:'0 auto 20px'}}>Đặt Hàng</Button>
+            {itemsCart.length==0? <Button type="submit" disabled variant="dark" style={{width:'200px', margin:'0 auto 20px'}}>Đặt Hàng</Button>
+            : <Button type="submit" variant="danger" style={{width:'200px', margin:'0 auto 20px'}}>Đặt Hàng</Button>              
+            }
+
 
           </Form>
         </Card>

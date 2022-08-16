@@ -3,10 +3,10 @@ import { useHistory } from "react-router-dom"
 import Button from "react-bootstrap/Button"
 
 const NotFoundAdmin = () => {
-    // let history = useHistory()
-    // const handleClick = () => {
-    //     history.goBack()
-    // }
+    let history = useHistory()
+    const handleClick = () => {
+        history.goBack()
+    }
     const myStyle = {
         display: "block",
         marginLeft: "auto",
@@ -31,7 +31,7 @@ const NotFoundAdmin = () => {
                 style={myStyle}
             />
             <div className="text-center">
-                <Button variant="warning mt-3" >
+                <Button variant="warning mt-3" onClick={handleClick}>
                     GO BACK
                 </Button>
             </div>
