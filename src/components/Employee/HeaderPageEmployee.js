@@ -42,83 +42,6 @@ const HeaderPageEmployee = ({
         event.preventDefault()
         history.push(`/search/${search}`)
     }
-    // let changeMenu
-
-
-    //     if(role===1){
-    //         changeMenu = (
-    //             <>
-    //             <Dropdown.Item
-    //                     as={Link}
-    //                     to={{
-    //                         pathname: "/update/employee",
-    //                         state: {
-    //                             full_name,
-    //                             email,
-    //                             phone_number,
-    //                             identification,
-    //                             date_of_birth,
-    //                             address,
-    //                             avatar,
-    //                             gender,
-    //                         },
-    //                     }}
-    //                 >
-    //                     Cập nhật thông tin
-    //                 </Dropdown.Item>
-    //                 <Dropdown.Item as={Link} to="/change/password">
-    //                     Thay đổi mật khẩu
-    //                 </Dropdown.Item>
-    //                 <Dropdown.Item
-    //                     as={Link}
-    //                     to="/"
-    //                     onClick={() => dispatch(setLogout())}
-    //                  >
-    //                         Đăng xuất
-    //                 </Dropdown.Item>
-                       
-                    
-    //             </>
-    //             )
-    //     }else{
-    //         changeMenu = (
-    //             <>
-                    
-    //                 <Dropdown.Item
-    //                     as={Link}
-    //                     to={{
-    //                         pathname: "/update/employee",
-    //                         state: {
-    //                             full_name,
-    //                             email,
-    //                             phone_number,
-    //                             identification,
-    //                             date_of_birth,
-    //                             address,
-    //                             avatar,
-    //                             gender,
-    //                         },
-    //                     }}
-    //                 >
-    //                     Cập nhật thông tin
-    //                 </Dropdown.Item>
-    //                 <Dropdown.Item as={Link} to="/change/password">
-    //                     Thay đổi mật khẩu
-    //                 </Dropdown.Item>
-    //                 <Dropdown.Item as={Link} to="/employee/register">
-    //                     Thêm Tài Khoản Nhân Viên 
-    //                 </Dropdown.Item>
-    //                 <Dropdown.Item
-    //                     as={Link}
-    //                     to="/"
-    //                     onClick={() => dispatch(setLogout())}
-    //                  >
-    //                         Đăng xuất
-    //                 </Dropdown.Item>
-                    
-    //             </>
-    //             )
-    //     }
             
     
 
@@ -144,7 +67,6 @@ const HeaderPageEmployee = ({
                     <Navbar.Collapse id="navbarScroll" style={{flex:'1'}}>                        
                         <Nav className='topNav-right' style={{textAlign:'right'}}>
                             <Dropdown>
-                                {console.log(avatar)}
                                 {avatar?
                                 <Dropdown.Toggle className="dropdown-basic">
                                 <img className="dropdown-basic1" src={avatar}></img>
@@ -185,9 +107,8 @@ const HeaderPageEmployee = ({
                                         <Dropdown.Item
                                             as={Link}
                                             to="/"
-                                            onClick={() => dispatch(setLogout())}
                                         >
-                                                Đăng xuất
+                                                Quay lại trang chủ
                                         </Dropdown.Item>
                                         
                                 

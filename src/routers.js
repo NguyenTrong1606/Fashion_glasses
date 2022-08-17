@@ -18,6 +18,13 @@ import ChangePassword from "./components/Account/ChangePassword"
 import ProtectedRouteEmployee from "./components/ProtectedRoute/ProtectedRouteEmployee"
 import ProtectedRouteCustomer from "./components/ProtectedRoute/ProtectedRouteCustomer"
 import HomeEmployee from "./components/Employee/HomeEmployee"
+import OrdersComplete from "./components/Employee/OrderComplete"
+import SearchOrderbySDT from "./components/Employee/SearchOrderBySDT"
+import LoadOrderComplete from "./components/Employee/LoadOrderComplete"
+import RegisterEmployeeForm from "./components/Employee/RegisterEmployeeForm"
+import ManageAccount from "./components/Employee/ManageAccount"
+import ManageCategory from "./components/Employee/ManageCategory"
+import ManageBrand from "./components/Employee/ManageBrand"
 const routers = [
     {
         path: "/",
@@ -65,14 +72,39 @@ const routers = [
         main: () => <ProtectedRouteEmployee component={UpdateInforEmployee} />,
     },
     {
+        path: "/employee/category",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={ManageCategory} />,
+    },
+    {
+        path: "/employee/brand",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={ManageBrand} />,
+    },
+    {
         path: "/employee/home",
         exact: false,
         main: () => <ProtectedRouteEmployee component={HomeEmployee} />,
     },
     {
+        path: "/employee/orders/search/:phone_number",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={SearchOrderbySDT} />,
+    },
+    {
+        path: "/employee/order/complete/:year/:month",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={LoadOrderComplete} />,
+    },
+    {
         path: "/change/password",
         exact: false,
         main: () => <ProtectedRoute component={ChangePassword} />,
+    },
+    {
+        path: "/manage/account/register",
+        exact: false,
+        main: () => <ProtectedRouteAdmin component={ManageAccount} />,
     },
     {
         path: "/cart",

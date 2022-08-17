@@ -35,6 +35,23 @@ export const loadOrdersHandle = createAsyncThunk(
     }
 )
 
+export const loadOrdersComplete = createAsyncThunk(
+    "orders/complete/fetch",
+    async ({year, month}) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/api/v1/orders/year/${year}/month/${month}`
+            )
+            if (response.status === 200) {
+                return await { ...response.data, status: response.status }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
 export const deleteOrder = createAsyncThunk(
     "order/delete",
     async ( id_order ) => {
@@ -97,18 +114,27 @@ const Orders = createSlice({
     name: "orders",
     initialState: {
         orders: [],
+        myorders:[]
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(loadAccountOrders.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
-                    state.orders = action.payload.data
+                    state.myorders = action.payload.data
                 } else {
                     toastError(action.payload.message)
                 }
             })
             .addCase(loadOrdersHandle.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.orders = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
+
+            .addCase(loadOrdersComplete.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
                     state.orders = action.payload.data
                 } else {
@@ -149,7 +175,7 @@ const Orders = createSlice({
             })
             .addCase(deleteOrder.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
-                    state.orders = state.orders.filter(
+                    state.myorders = state.orders.filter(
                         (order) =>
                             order.id_order !== action.payload.id_order
                     )
@@ -165,7 +191,7 @@ const Orders = createSlice({
 
 
 const ordersReducer = Orders.reducer
-
+export const myOrdersSelector = (state) => state.ordersReducer.myorders
 export const ordersSelector = (state) => state.ordersReducer.orders
 
 export default ordersReducer

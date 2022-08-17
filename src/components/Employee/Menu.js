@@ -1,12 +1,13 @@
 import React, { useEffect } from "react"
 import { Col, Image } from "react-bootstrap"
 import { Link } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { loadUser } from "../../reducers/Account/LoginForm"
+import { useDispatch,useSelector } from "react-redux"
+import { loadUser, userSelector } from "../../reducers/Account/LoginForm"
 import glassesIcon from "../../assets/logo.png"
 
 const Menu = () => {
     const dispatch = useDispatch()
+    const user = useSelector(userSelector)
     useEffect(() => {
         dispatch(loadUser())
     }, [dispatch])
@@ -27,23 +28,23 @@ const Menu = () => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/moderator/users" className="nav-link text-dark" >
+                                <Link to="/employee/home" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
                                     Quản lý Hóa Đơn
                                 </Link>
                             </li>
-                            <li className="nav-item">
-                                <Link to="/moderator/tags" className="nav-link text-dark" >
+                            {user.role === 2 && <li className="nav-item">
+                                <Link to="/manage/account/register" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
-                                    Quản lý Tài Khoản
+                                    Tạo tài khoản nhân viên
                                 </Link>
-                            </li>
+                            </li>}
                             <li className="nav-item">
-                                <Link to="/moderator/posts" className="nav-link text-dark" >
+                                <Link to="/employee/category" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
@@ -51,7 +52,7 @@ const Menu = () => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/moderator/feedback" className="nav-link text-dark" >
+                                <Link to="/employee/brand" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
@@ -59,7 +60,7 @@ const Menu = () => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/moderator/posts" className="nav-link text-dark" >
+                                <Link to="" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
@@ -100,23 +101,24 @@ const Menu = () => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                                <Link to="/moderator/users" className="nav-link text-dark" >
+                                <Link to="/employee/home" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
                                     Quản lý Hóa Đơn
                                 </Link>
                             </li>
+                            {user.role === 2 &&
                             <li className="nav-item">
-                                <Link to="/moderator/tags" className="nav-link text-dark" >
+                                <Link to="/manage/account/register" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
-                                    Quản lý Tài Khoản
+                                    Tạo tài khoản nhân viên
                                 </Link>
-                            </li>
+                            </li>}
                         <li className="nav-item">
-                            <Link to="/moderator/users" className="nav-link text-dark" >
+                            <Link to="/employee/category" className="nav-link text-dark" >
                                 <span className='bi me-3'>
                                     <i className="fas fa-heart"></i>
                                 </span>
@@ -124,7 +126,7 @@ const Menu = () => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/moderator/tags" className="nav-link text-dark" >
+                            <Link to="/employee/brand" className="nav-link text-dark" >
                                 <span className='bi me-3'>
                                     <i className="fas fa-heart"></i>
                                 </span>

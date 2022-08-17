@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router"
 import Header from "../home/Header"
 import Footer from "../home/Footer"
 import { Col, Container, Row,Button, Form, Card,Table } from "react-bootstrap"
 import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
-import { loadAccountOrders, ordersSelector, deleteOrder} from "../../reducers/Orders/orders"
+import { loadAccountOrders, myOrdersSelector, deleteOrder} from "../../reducers/Orders/orders"
 import { voucherSelector, loadAllVoucherAccount } from "../../reducers/Voucher/voucher"
 import { toastError, toastSuccess } from "../.././Toast/Toast"
 
@@ -14,7 +13,7 @@ const ShowMyOrders =() =>{
     const dispatch = useDispatch()
     const user = useSelector(userSelector)
     const vouchers = useSelector(voucherSelector)
-    const orders = useSelector(ordersSelector)
+    const orders = useSelector(myOrdersSelector)
     useEffect(() => {
         dispatch(loadUser())
         dispatch(loadAccountOrders())
@@ -64,7 +63,7 @@ const ShowMyOrders =() =>{
               <td className="d-flex flex-column">
                 {order.status===0 && <h6 style={{lineHeight:'100px'}}>Chưa xác nhận</h6>}
                 {order.status===1 && <h6 style={{lineHeight:'100px'}}>Đã xác nhận</h6>}
-                { order.status===2 && <h6 style={{lineHeight:'100px'}}>Đang giao</h6>}
+                {order.status===2 && <h6 style={{lineHeight:'100px'}}>Đang giao</h6>}
                 {order.status===3 && <h6 style={{lineHeight:'100px'}}>Đã giao</h6>}
                 {order.status===4 && <h6 style={{lineHeight:'100px'}}>Shop hủy đơn</h6>}
                 

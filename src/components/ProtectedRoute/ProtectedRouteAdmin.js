@@ -19,7 +19,7 @@ const ProtectedRouteAdmin = ({ component: Component, ...rest }) => {
                 render={(props) => {
                     if (
                         localStorage[types.LOCAL_STORAGE_TOKEN_NAME] &&
-                        user.role == 2
+                        user.role === 2
                     ) {
                         return <Component {...rest} {...props} />
                     } else {

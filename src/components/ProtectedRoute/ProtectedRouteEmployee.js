@@ -20,7 +20,6 @@ const ProtectedRouteEmployee = ({ component: Component, ...rest }) => {
                     if (
                         localStorage[types.LOCAL_STORAGE_TOKEN_NAME] && user.role > 0
                     ) {
-                        console.log(user.role)
                         return <Component {...rest} {...props} />
                         
                     } else {

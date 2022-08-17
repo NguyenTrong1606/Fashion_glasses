@@ -179,7 +179,6 @@ const Header = ({
                             <Button className="btn_cart" style={{ marginRight: '20px' }} onClick={()=>history.push('/cart')}><FontAwesomeIcon icon={faCartShopping} /></Button>:<></>
                         }
                             <Dropdown>
-                                {console.log(avatar)}
                                 {avatar?
                                 <Dropdown.Toggle className="dropdown-basic">
                                 <img className="dropdown-basic1" src={avatar}></img>

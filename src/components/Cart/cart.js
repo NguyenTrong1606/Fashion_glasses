@@ -145,7 +145,7 @@ import {
 
       dispatch(addOrder({id_voucher,address}))
       dispatch(loadItems())
-      history.push("/account/orders")
+      history.push("/account/my-order")
 
     }
 
