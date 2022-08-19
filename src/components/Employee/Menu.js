@@ -60,7 +60,7 @@ const Menu = () => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="" className="nav-link text-dark" >
+                                <Link to="/employee/product" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
@@ -68,7 +68,7 @@ const Menu = () => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/moderator/feedback" className="nav-link text-dark" >
+                                <Link to="/employee/voucher" className="nav-link text-dark" >
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
@@ -134,7 +134,7 @@ const Menu = () => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/moderator/posts" className="nav-link text-dark" >
+                            <Link to="/employee/product" className="nav-link text-dark" >
                                 <span className='bi me-3'>
                                     <i className="fas fa-heart"></i>
                                 </span>
@@ -142,7 +142,7 @@ const Menu = () => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/moderator/feedback" className="nav-link text-dark" >
+                            <Link to="/employee/voucher" className="nav-link text-dark" >
                                 <span className='bi me-3'>
                                     <i className="fas fa-heart"></i>
                                 </span>

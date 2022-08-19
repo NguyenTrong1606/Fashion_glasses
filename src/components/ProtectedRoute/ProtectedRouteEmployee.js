@@ -10,7 +10,9 @@ const ProtectedRouteEmployee = ({ component: Component, ...rest }) => {
 
     useEffect(() => {
         dispatch(loadUser())
-    })
+    },[dispatch])
+
+    if(user.id_account ===0)return <></>
 
     return (
         <>

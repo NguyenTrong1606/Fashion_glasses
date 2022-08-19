@@ -25,6 +25,11 @@ import RegisterEmployeeForm from "./components/Employee/RegisterEmployeeForm"
 import ManageAccount from "./components/Employee/ManageAccount"
 import ManageCategory from "./components/Employee/ManageCategory"
 import ManageBrand from "./components/Employee/ManageBrand"
+import ManageProduct from "./components/Employee/ManageProduct"
+import ManageVoucher from "./components/Employee/ManageVoucher"
+import ForgotPassword from "./components/Account/ForgotPassword"
+import EnterCode from "./components/Account/EnterCode"
+import EnterNewPassword from "./components/Account/EnterNewPassword"
 const routers = [
     {
         path: "/",
@@ -42,12 +47,12 @@ const routers = [
         main: () => <ShowProduct />,
     },
     {
-        path: "/product/category/:id_category",
+        path: "/category/:id_category/product",
         exact: false,
         main: () => <ShowProductByCategory />,
     },
     {
-        path: "/product/brand/:id_brand",
+        path: "/brand/:id_brand/product",
         exact: false,
         main: () => <ShowProductByBrand />,
     },
@@ -60,6 +65,22 @@ const routers = [
         path: "/login",
         exact: false,
         main: () => <LoginForm/>,
+    },
+    {
+        path: "/forgot/password",
+        exact: false,
+        main: () => <ForgotPassword />,
+        // main: () => <ProtectedRoute component={ForgotPassword} />,
+    },
+    {
+        path: "/forgot/code",
+        exact: false,
+        main: () => <EnterCode />,
+    },
+    {
+        path: "/forgot/change",
+        exact: false,
+        main: () => <EnterNewPassword />,
     },
     {
         path: "/update/customer",
@@ -75,6 +96,18 @@ const routers = [
         path: "/employee/category",
         exact: false,
         main: () => <ProtectedRouteEmployee component={ManageCategory} />,
+
+    },
+    {
+        path: "/employee/voucher",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={ManageVoucher} />,
+
+    },
+    {
+        path: "/employee/product",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={ManageProduct} />,
     },
     {
         path: "/employee/brand",

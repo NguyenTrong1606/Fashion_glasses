@@ -199,15 +199,17 @@
 }
 /* end footer */
 
-/* start product */
-/* .card-product{
-	transform: scale(1);
+/* start voucher */
+.card-voucher b{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 25px;
+    -webkit-line-clamp: 2;
+    height: 50px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
-.card-product:hover{
-	cursor: pointer;
-	transform: scale(1.1);
-} */
-/* end product */
+/* end voucher */
 /* start show product */
 .bread-crumbs {
 	height: 30px;
@@ -712,7 +714,7 @@ select {
 /* end login */
 
 /* start cart */
-td,th{
+.show-item td,th{
 	border: none;
 	line-height: 100px;
 }

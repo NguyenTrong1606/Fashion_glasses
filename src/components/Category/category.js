@@ -14,7 +14,7 @@ const FetchCategory =() =>{
     const getCategory = listCategory.map((category) =>{
         return(
                 
-                <NavDropdown.Item as={Link} to={`/product/category/${category.id_category}`} key={category.id_category}   style={{textTransfrom:'capitalize'}}>
+                <NavDropdown.Item as={Link} to={`/category/${category.id_category}/product`} key={category.id_category}   style={{textTransfrom:'capitalize'}}>
                     {category.name_category}
             
                     </NavDropdown.Item>

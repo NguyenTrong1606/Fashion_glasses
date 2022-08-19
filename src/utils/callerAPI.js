@@ -65,6 +65,52 @@ export const updateinforEmployee = async (updateForm) => {
     }
 }
 
+export const forgotPassword = async (account_name) => {
+    try {
+        const response = await axios.post(
+            "http://localhost:8000/api/v1/account/forget/password",
+            { account_name }
+        )
+        if (response.status === 200) {
+            return await { ...response.data, status: response.status }
+        }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+export const enterCodePass = async ({account_name, code}) => {
+    try {
+        const response = await axios.post(
+            `http://localhost:8000/api/v1/account/forget/verify`,
+            { account_name, code }
+        )
+        if (response.status === 200) {
+            
+            return await { ...response.data, status: response.status }
+        }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+
+export const enterPasswordChange = async ({account_name, code, new_password}) => {
+    try {
+        const response = await axios.post(
+            `http://localhost:8000/api/v1/account/forget/change`,
+            { account_name, code, new_password }
+        )
+        if (response.status === 200) {
+            
+            return await { ...response.data, status: response.status }
+        }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+
 export const changePassword = async (data) => {
     try {
         const new_password = data.new_password

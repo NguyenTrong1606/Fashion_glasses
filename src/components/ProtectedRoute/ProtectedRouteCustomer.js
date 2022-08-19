@@ -7,11 +7,12 @@ import * as types from "../.././contains/types"
 const ProtectedRouteCustomer = ({ component: Component, ...rest }) => {
     const dispatch = useDispatch()
     const user = useSelector(userSelector)
+    
 
     useEffect(() => {
         dispatch(loadUser())
-    })
-
+    },[dispatch])
+    if(user.id_account ===0)return <></>
     return (
         <>
             <Route
@@ -21,8 +22,6 @@ const ProtectedRouteCustomer = ({ component: Component, ...rest }) => {
                         localStorage[types.LOCAL_STORAGE_TOKEN_NAME] &&
                         user.role === 0
                     ) {
-                        console.log(user.role)
-                        console.log(typeof user.role)
 
                         return <Component {...rest} {...props} />
                     } else {

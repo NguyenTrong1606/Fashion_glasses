@@ -64,7 +64,7 @@ const ShowProductByCategory= () => {
                         to={`/product/${product.id_product}`}
                         onClick={()=>{window.scroll(0, 0, "smooth") }}
                     >
-                    <Card.Img variant="top" src={product.images[1]} />
+                    <Card.Img variant="top" src={product.images[0]} />
                         <Card.Body style={{textAlign: 'center'}}>
                             <Card.Title>
                                 {product.name_product}

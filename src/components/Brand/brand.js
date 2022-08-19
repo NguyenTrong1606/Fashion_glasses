@@ -13,7 +13,7 @@ const FetchBrand =() =>{
 
     const getBrand = listBrand.map((brand) =>{
         return(            
-            <NavDropdown.Item as={Link} to={`/product/brand/${brand.id_brand}`} key={brand.id_brand} style={{textTransfrom:'capitalize'}}>
+            <NavDropdown.Item as={Link} to={`/brand/${brand.id_brand}/product`} key={brand.id_brand} style={{textTransfrom:'capitalize'}}>
         
                     {brand.name_brand}
                       

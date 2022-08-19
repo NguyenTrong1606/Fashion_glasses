@@ -67,8 +67,6 @@ const UpdateInforCustomer = () => {
     }
     const onSubmitUpdateUser = async (event) => {
         event.preventDefault()
-        // formUpdateUser.gender = frmGender
-        console.log(gender)
         
         const fd = new FormData()
         fd.append('full_name', full_name)
