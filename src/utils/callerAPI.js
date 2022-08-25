@@ -15,6 +15,20 @@ export const registerUser = async (registerForm) => {
     }
 }
 
+export const registerEmployee = async (registerForm) => {
+    try {
+        const response = await axios.post(
+            "http://localhost:8000/api/v1/employee/",
+            registerForm
+        )
+        if (response.status === 201)
+            return await { ...response.data, status: response.status }
+    } catch (error) {
+        if (error.response.data) return error.response.data
+        else return { message: error.message }
+    }
+}
+
 export const loginUser = async (loginForm) => {
     try {
         const response = await axios.post(

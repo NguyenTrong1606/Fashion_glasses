@@ -43,16 +43,16 @@ const SearchProduct= () => {
             if(product.discount<=0){
                 discountPrice =(
                     <>
-                    <span style={{color: 'var(--primary-color)', fontSize: '20px', fontWeight: 600}}>{product.price - +product.price*product.discount/100}đ</span>
+                    <span style={{color: 'var(--primary-color)', fontSize: '20px', fontWeight: 600}}>{(product.price - +product.price*product.discount/100).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
                     </>
                     
                 )
             }
             else {discountPrice= (
                 <>
-                <span style={{textDecoration: 'line-through', fontSize: '14px'}}>{product.price}đ</span>
+                <span style={{textDecoration: 'line-through', fontSize: '14px'}}>{(product.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
                 <br/>
-                <span style={{color: 'red', fontSize: '20px', fontWeight: 600}}>{product.price - product.price*product.discount/100}đ</span>
+                <span style={{color: 'red', fontSize: '20px', fontWeight: 600}}>{(product.price - product.price*product.discount/100).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
                 </>
                 
             )}
@@ -61,8 +61,18 @@ const SearchProduct= () => {
                     <Card className="bg-light card-product" >
                     <Link style={{textDecoration: 'none'}}
                         to={`/product/${product.id_product}`}
-                        onClick={()=>{window.scroll(0, 0, "smooth") }}
+                        onClick={()=>{window.scroll(0, 0, "smooth")
+                        localStorage.setItem('link', `/product/${product.id_product}`)
+                    }}
                     >
+                    {product.quantity < 1?<h2 style={{
+                    position: 'absolute',
+                    top:'30%', left:'0',
+                    right:'0',
+                    color:'red',
+                    fontWeight:'800',
+                    background:'rgba(13, 202, 240, 0.45)',
+                    textAlign:'center'}}>HẾT HÀNG</h2>:<></>}
                     <Card.Img variant="top" src={product.images[0]} />
                         <Card.Body style={{textAlign: 'center'}}>
                             <Card.Title>
@@ -101,6 +111,7 @@ const SearchProduct= () => {
                     <SliderCoverImage />
                 </Row>
                 <Row style={{ backgroundColor: '#F0F8FF' }}>
+                <h2 style={{color:'orange'}}>Tìm kiếm: {search} </h2>
                 <Row style={{ margin: '20px 0' }}>
                 {displayTodo}
                 </Row>

@@ -36,7 +36,7 @@ const ShowVoucherCollect= () => {
             return (
                 <Col lg={2} md={3} sm={4} key={voucher.id_voucher} style={{ margin: '15px 0' }} >
                     <Card className="bg-light card-voucher" style={{height:'220px'}} >
-                        <Card.Body  className=" d-flex flex-column">
+                        <Card.Body  className=" d-flex flex-column"> 
                         <Card.Title style={{textAlign: 'center', color:'orange' , flex:'2'}}>
                             {voucher.title}
                         </Card.Title>

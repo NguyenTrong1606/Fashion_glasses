@@ -27,6 +27,11 @@ const RegisterForm = () => {
     }
     const onSubmitRegister = async (event) => {
         event.preventDefault()
+        var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+        if(!vnf_regex.test(phone_number)){
+            toastError("SĐT phải có 10 số! Bắt đầu bằng 1 trong các cặp số 09, 03, 07, 08, 05")
+            return 
+        }
         if (password !== confirm) {
             toastError("Password and Confirm password must match")
         } else {
@@ -74,7 +79,7 @@ const RegisterForm = () => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Control type='text'
+                            <Form.Control type='email'
                                 require="true"
                                 placeholder="Email"
                                 name="email"

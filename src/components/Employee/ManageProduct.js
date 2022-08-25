@@ -30,7 +30,7 @@ import {
   addProduct,
   updateProduct
 } from "../../reducers/Products/products";
-import { toastSuccess } from "../../Toast/Toast";
+import { toastError, toastSuccess } from "../../Toast/Toast";
 
 const ManageProduct = () => {
   const dispatch = useDispatch();
@@ -94,23 +94,25 @@ const ManageProduct = () => {
   const fileSelectedHandle = (event) => {
     setImages(event.target.files);
   };
+  
 
   const onSubmitAddProduct = (event) => {
     event.preventDefault();
     const fd = new FormData();
-    // fd.append("name_product", name_product);
-    // fd.append("description", description);
-    // fd.append("price", price);
-    // fd.append("quantity", quantity);
-    // fd.append("discount", discount === "" ? 0 : discount);
-    // fd.append("date_discount_end", date_discount_end);
-    // fd.append("id_category", id_category);
-    // fd.append("id_brand", id_brand);
-    // fd.append("img1", images[0] || new Blob([]), images[0]?.name || "");
-    // fd.append("img2", images[1] || new Blob([]), images[1]?.name || "");
-    // fd.append("img3", images[2] || new Blob([]), images[2]?.name || "");
-    // fd.append("img4", images[3] || new Blob([]), images[3]?.name || "");
-    // fd.append("img5", images[4] || new Blob([]), images[4]?.name || "");
+    // if(!price_format.test(formProduct.price)){
+    //   console.log(typeof formProduct.price)
+    //   toastError("Giá Tiền phải là số và không bắt đầu bằng số 0")
+    //   return 
+    // }
+    // if(!price_format.test(formProduct.quantity)){
+    //   toastError("Số lượng trong kho phải là số và không bắt đầu bằng số 0")
+    //   return 
+    // }
+    // if(!discount_format.test(formProduct.quantity)){
+    //   toastError("Giảm giá phải 2 chữ số. VD:01, 02, 99")
+    //   return 
+    // }
+
     fd.append("name_product", formProduct.name_product);
     fd.append("description", formProduct.description);
     fd.append("price", formProduct.price);
@@ -162,7 +164,7 @@ const ManageProduct = () => {
     
     
   };
-
+  
   const resetForm = (event) =>{
     event.preventDefault();
     setActiveForm(true)
@@ -201,7 +203,6 @@ const ManageProduct = () => {
       const STT = index + 1;
 
       return (
-        <>
           <tr
             key={product.id_product}
             style={{
@@ -254,7 +255,6 @@ const ManageProduct = () => {
               </Button>
             </td>
           </tr>
-        </>
       );
     });
 
@@ -390,9 +390,10 @@ const ManageProduct = () => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Control
-                  type="numeric"
+                  type="number"
                   require="true"
                   placeholder="Giá tiền"
+                  min="1000"
                   name="price"
                   value={price}
                   onChange={onChangeAddProduct}
@@ -410,7 +411,7 @@ const ManageProduct = () => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Control
-                  type="numeric"
+                  type="number"
                   require="true"
                   placeholder="Số lượng trong kho"
                   name="quantity"
@@ -420,9 +421,10 @@ const ManageProduct = () => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Control
-                  type="numeric"
+                  type="number"
                   require="true"
                   placeholder="Giảm giá (Tính Theo %).VD: nhập 10 => 10%"
+                  min="0" max="99"
                   name="discount"
                   value={discount}
                   onChange={onChangeAddProduct}
@@ -515,7 +517,7 @@ const ManageProduct = () => {
               <Form.Group className="mb-3" style={{textAlign:'left'}} >
                 <Form.Label>Số lượng trong kho:</Form.Label>
                 <Form.Control
-                  type="numeric"
+                  type="number"
                   require="true"
                   placeholder="Số lượng trong kho"
                   name="quantity"
@@ -530,6 +532,7 @@ const ManageProduct = () => {
                   require="true"
                   placeholder="Giảm giá (Tính Theo %).VD: nhập 10 => 10%"
                   name="discount"
+                  min="0" max="99"
                   value={discount}
                   onChange={onChangeAddProduct}
                 />

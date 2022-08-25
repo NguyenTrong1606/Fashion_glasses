@@ -21,12 +21,12 @@ export const fetchAllProduct = createAsyncThunk(
     }
 )
 
-export const fetchRamdomProduct = createAsyncThunk(
-    "products/ramdom",
+export const fetchRandomProduct = createAsyncThunk(
+    "products/random",
     async () => {
         try {
             const response = await axios.get(
-                "http://localhost:8000/api/v1/product/ramdom"
+                "http://localhost:8000/api/v1/product/random"
             )
             if (response.status === 200) {
                 return await {...response.data, status: response.status }
@@ -65,6 +65,26 @@ export const loadProductByBrand = createAsyncThunk(
         try {
             const response = await axios.get(
                 `http://localhost:8000/api/v1/product/brand/${id_brand}`
+            )
+            if (response.status === 200) {
+                return await {
+                    ...response.data,
+                    status: response.status,
+                }
+            }
+        } catch (error) {
+            if (error.response.data) return error.response.data
+            else return { message: error.message }
+        }
+    }
+)
+
+export const filterProduct = createAsyncThunk(
+    "product/category/brand",
+    async ({id_category, id_brand}) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8000/api/v1/product/category/${id_category}/brand/${id_brand}`
             )
             if (response.status === 200) {
                 return await {
@@ -176,6 +196,9 @@ const products = createSlice({
     name: "products",
     initialState: {
         products: [],
+        productRandom:[],
+        filterProduct:[],
+        router: "",
         product: {
             id_product: 0,
             name_product: "",
@@ -185,13 +208,19 @@ const products = createSlice({
             quantity: 0,
             id_category: 0,
             date_discount_end: "",
-            id_brand: "",
+            id_brand: 0,
+            category:"",
+            brand:"",
             images: []
 
         },
         searchProduct:[],
     },
-    reducers: {},
+    reducers: {
+        setRouter(state, action){
+            state.router = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAllProduct.fulfilled, (state, action) => {
@@ -215,9 +244,16 @@ const products = createSlice({
                     toastError(action.payload.message)
                 }
             })
-            .addCase(fetchRamdomProduct.fulfilled, (state, action) => {
+            .addCase(fetchRandomProduct.fulfilled, (state, action) => {
                 if (action.payload.status === 200) {
-                    state.products = action.payload.data
+                    state.productRandom = action.payload.data
+                } else {
+                    toastError(action.payload.message)
+                }
+            })
+            .addCase(filterProduct.fulfilled, (state, action) => {
+                if (action.payload.status === 200) {
+                    state.filterProduct = action.payload.data
                 } else {
                     toastError(action.payload.message)
                 }
@@ -283,9 +319,12 @@ const products = createSlice({
 const productReducer = products.reducer
 
 export const productsSelector = (state) => state.productReducer.products
+export const productRandomSelector = (state) => state.productReducer.productRandom
+export const filterProductSelector = (state) => state.productReducer.filterProduct
 // export const searchProductSelector = (state) => state.productReducer.searchProduct
 export const productDetailSelector = (state) => state.productReducer.product
+export const routerDetailSelector = (state) => state.productReducer.router
 
-
+export const {setRouter} = products.actions
 
 export default productReducer

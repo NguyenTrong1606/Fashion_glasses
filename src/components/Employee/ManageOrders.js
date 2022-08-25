@@ -33,11 +33,27 @@ const ManageOrders =() =>{
     })
 
     const updateStatusOrder = (id_order, status) => {
+        var result 
+        if(status===1){
+         result = window.confirm(`Bạn muốn đổi trạng thái đơn hàng ${id_order} sang trạng thái xác nhận?`);
+        }
+        if(status===2){
+        result = window.confirm(`Bạn muốn đổi trạng thái đơn hàng ${id_order} sang trạng thái đang giao?`);
+        }
+        if(status===3){
+        result = window.confirm(`Bạn muốn đổi trạng thái đơn hàng ${id_order} sang trạng thái đã giao?`);
+        }
+        if(status===4){
+        result = window.confirm(`Bạn muốn đổi trạng thái đơn hàng ${id_order} sang trạng thái hủy?`);
+        }
         const order = {
             id_order,
             status,
         }
-        dispatch(updateOrder(order))
+        if(result){        
+            dispatch(updateOrder(order))
+        }
+
     }
 
     
@@ -120,7 +136,7 @@ const ManageOrders =() =>{
                         > ĐÃ GIAO </Button>}
 
               </td>
-              <td><Button variant="danger" onClick={() =>
+              <td>{order.status ===3?<></>:<Button variant="danger" onClick={() =>
                                 updateStatusOrder(
                                     order.id_order,
                                     4
@@ -129,7 +145,7 @@ const ManageOrders =() =>{
                         >
                     <i className="far fa-trash-alt fa-x"   
                     ></i>
-                  </Button>
+                  </Button>}
               </td>
             </tr>
             {

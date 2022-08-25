@@ -7,7 +7,6 @@ import { Col, Container, Row,Button, Form, Card,Table } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import { loadUser,updateAddressUser,userSelector } from "../../reducers/Account/LoginForm"
-import { fetchAllProduct, productsSelector } from "../../reducers/Products/products"
 import { voucherSelector, loadVoucherAccount } from "../../reducers/Voucher/voucher"
 import { addOrder } from "../../reducers/Orders/orders"
 import { toastError, toastSuccess } from "../.././Toast/Toast"
@@ -19,17 +18,15 @@ import {
  } from "../../reducers/Cart/cart"
  import { useHistory } from "react-router-dom"
 
-
+ 
 
  const ShowCart =() =>{
     const dispatch = useDispatch()
     const user = useSelector(userSelector)
     const itemsCart = useSelector(listItemsSelector)
-    const products = useSelector(productsSelector)
     const vouchers = useSelector(voucherSelector)
     useEffect(() => {
         dispatch(loadUser())
-        dispatch(fetchAllProduct())
         dispatch(loadVoucherAccount())
         dispatch(loadItems())
     }, [dispatch])
@@ -53,7 +50,7 @@ import {
             var STT = + index +1
             const upQuantity = (id_product, i)=>{
                  var quantity = +itemCart.quantity + i
-                if(0<quantity && quantity<itemCart.product.quantity){
+                if(0<quantity && quantity<=itemCart.product.quantity){
                     const item = {
                         id_product,
                         quantity
@@ -143,9 +140,8 @@ import {
       event.preventDefault()
       const address = user.address
 
-      dispatch(addOrder({id_voucher,address}))
+      dispatch(addOrder({id_voucher,address, history}))
       dispatch(loadItems())
-      history.push("/account/my-order")
 
     }
 
@@ -244,7 +240,7 @@ import {
                   <th style={{width:'12%', lineHeight:'32px'}}>Giá tiền</th>
                   <th style={{width:'8%', lineHeight:'32px'}}>Số lượng</th>
                   <th style={{width:'15%', lineHeight:'32px'}}>Thành Tiền</th>
-                  {/* <th style={{width:'4%', lineHeight:'32px'}}>Sửa</th> */}
+                  
                   <th style={{width:'8%', lineHeight:'32px'}}>Xóa</th>
                 </tr>
               </thead>

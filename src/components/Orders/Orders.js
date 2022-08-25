@@ -4,7 +4,7 @@ import Header from "../home/Header"
 import Footer from "../home/Footer"
 import { Col, Container, Row,Button, Form, Card,Table } from "react-bootstrap"
 import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
-import { loadAccountOrders, myOrdersSelector, deleteOrder} from "../../reducers/Orders/orders"
+import { loadAccountOrders, myOrdersSelector, customerUpdateOrder} from "../../reducers/Orders/orders"
 import { voucherSelector, loadAllVoucherAccount } from "../../reducers/Voucher/voucher"
 import { toastError, toastSuccess } from "../.././Toast/Toast"
 
@@ -28,7 +28,7 @@ const ShowMyOrders =() =>{
     
 
     const showListOrder = orders.map((order,index)=>{
-        var STT = index
+        var STT = index + 1
         var tong = 0
         var chietKhau = 0
         const ShowDeltail = order.detail.map((orderDetail)=>{
@@ -49,8 +49,13 @@ const ShowMyOrders =() =>{
             }
         })
         const delOrder =(idOrder)=>{
+            var result  = window.confirm(`Bạn muốn đổi trạng thái đơn hàng ${idOrder} sang trạng thái hủy?`);
+        
             const id_order = idOrder
-            dispatch(deleteOrder(id_order))
+            if(result){
+                dispatch(customerUpdateOrder(id_order))
+            }
+            
 
         }
         return(
@@ -65,7 +70,7 @@ const ShowMyOrders =() =>{
                 {order.status===1 && <h6 style={{lineHeight:'100px'}}>Đã xác nhận</h6>}
                 {order.status===2 && <h6 style={{lineHeight:'100px'}}>Đang giao</h6>}
                 {order.status===3 && <h6 style={{lineHeight:'100px'}}>Đã giao</h6>}
-                {order.status===4 && <h6 style={{lineHeight:'100px'}}>Shop hủy đơn</h6>}
+                {order.status===4 && <h6 style={{lineHeight:'100px'}}>Đã hủy đơn</h6>}
                 
               </td>
               <td><Button variant="link" 

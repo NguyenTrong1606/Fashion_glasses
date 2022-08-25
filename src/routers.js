@@ -30,6 +30,7 @@ import ManageVoucher from "./components/Employee/ManageVoucher"
 import ForgotPassword from "./components/Account/ForgotPassword"
 import EnterCode from "./components/Account/EnterCode"
 import EnterNewPassword from "./components/Account/EnterNewPassword"
+import FilterProduct from "./components/Filter/Filter"
 const routers = [
     {
         path: "/",
@@ -55,6 +56,11 @@ const routers = [
         path: "/brand/:id_brand/product",
         exact: false,
         main: () => <ShowProductByBrand />,
+    },
+    {
+        path: "/category/:id_category/brand/:id_brand/filter",
+        exact: false,
+        main: () => <FilterProduct />,
     },
     {
         path: "/register",

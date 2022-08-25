@@ -75,8 +75,9 @@ const UpdateInforCustomer = () => {
         fd.append('avatar', selectedFile, selectedFile.name)
 
         try {
-
+            toastSuccess('Vui lòng chờ trong giây lát')
             const updateDataCustomer = await updateinforCustomer(fd)
+            
             if (updateDataCustomer.status === 200) {
                 toastSuccess(updateDataCustomer.message)
             } else {

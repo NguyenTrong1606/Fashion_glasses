@@ -13,7 +13,7 @@ const ProtectedRouteEmployee = ({ component: Component, ...rest }) => {
     },[dispatch])
 
     if(user.id_account ===0)return <></>
-
+    
     return (
         <>
             <Route

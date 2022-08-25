@@ -44,19 +44,34 @@ const ShowProduct = ()=>{
     if(product.discount<=0){
         discountPrice =(
             <>
-            <span style={{color: 'var(--primary-color)', fontSize: '20px', fontWeight: 600}}>{product.price - +product.price*product.discount/100}đ</span>
+            <span style={{color: 'var(--primary-color)', fontSize: '20px', fontWeight: 600}}>{(product.price - +product.price*product.discount/100).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
             </>
             
         )
     }
     else {discountPrice= (
         <>
-        <span style={{textDecoration: 'line-through', fontSize: '14px'}}>{product.price}đ</span>
+        <span style={{textDecoration: 'line-through', fontSize: '14px'}}>{product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
         <br/>
-        <span style={{color: 'red', fontSize: '20px', fontWeight: 600}}>{product.price - product.price*product.discount/100}đ</span>
+        <span style={{color: 'red', fontSize: '20px', fontWeight: 600}}>{(product.price - product.price*product.discount/100).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span>
         </>
         
     )}
+    // const formatDescription = (description) => {
+    //     const chuoi = description.split("-")
+    //     for(let i = 0; i < chuoi.length; i++){
+    //         moTa = moTa + chuoi[i] + "<br/>"
+    //     }
+    // }
+    let moTa 
+    const chuoi = product.description.split("-")
+    for(let i = 0; i < chuoi.length; i++){
+         moTa = (<>{moTa}
+             {chuoi[i]}
+               <br/>
+               </>)
+    }
+    
 
     const imgRef = useRef()
     const imgShowRef = useRef()
@@ -105,8 +120,6 @@ const ShowProduct = ()=>{
                     quantity
                 }
                 dispatch(updateItem(item))
-
-                console.log(quantity)
                 
                 
             }
@@ -119,7 +132,6 @@ const ShowProduct = ()=>{
             }
 
             quantity = 1
-            console.log(quantity)
 
             quantityRef.current.value = 1
             
@@ -165,12 +177,15 @@ const ShowProduct = ()=>{
                             <p>
                             {discountPrice}				 
                             </p>
-                            <p style={{fontSize: '16px', marginTop: '5px'}}>Mô tả: {product.description}</p>
+                            <p style={{fontSize: '16px', marginTop: '5px'}}>Mô tả:<br/>
+                                Loại sản phẩm: {product.category}<br/>
+                                Nhãn hiệu: {product.brand}
+                             {moTa}</p>
                         </div>
                         <Row className="btn-orders">	
                             {product.quantity <1?(
                                    <Button disabled = 'true' style={{fontSize: '16px', fontWeight: 600, backgroundColor: 'gray', color: '#fff'}}> <FontAwesomeIcon icon={faCartShopping} /> Thêm vào giỏ hàng</Button>
-                            ): itemCart && itemCart.quantity === product.quantity?
+                            ): itemCart && itemCart.quantity >= product.quantity?
                             <>
                                 <Button disabled = 'true' style={{fontSize: '16px', fontWeight: 600, backgroundColor: 'gray', color: '#fff'}}> <FontAwesomeIcon icon={faCartShopping} /> Thêm vào giỏ hàng</Button>
                                 <h4 style={{color:'green', fontWeight:'800', textDecoration:'underline'}}>Sản phẩm này đã được bạn thêm số lượng tối đa trong giỏ hàng</h4>

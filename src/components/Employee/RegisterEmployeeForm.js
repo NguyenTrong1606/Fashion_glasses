@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { toastError, toastSuccess } from "../.././Toast/Toast"
-import { registerUser } from "../../utils/callerAPI"
+import { registerEmployee } from "../../utils/callerAPI"
 import { useHistory, Link } from "react-router-dom"
 import { Form, Button } from "react-bootstrap"
 
@@ -15,11 +15,12 @@ const RegisterEmployeeForm = () => {
         gender:0,
         address:"",
         account_name: "",
-        password: "",
-        confirm: "",
+        password: "123456",
+        confirm: "123456",
     })
 
     const history = useHistory()
+    const dateRef = useRef()
 
     const onChangeRegister = (event) => {
         setRegisterForm({
@@ -33,6 +34,17 @@ const RegisterEmployeeForm = () => {
             toastError("Password and Confirm password must match")
         } else {
             try {
+                var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                var CCCD_format=/(([0-9]{12})\b)/g
+                if(!vnf_regex.test(phone_number)){
+                    toastError("SĐT phải có 10 số! Bắt đầu bằng 1 trong các cặp số 09, 03, 07, 08, 05")
+                    return 
+                }
+                if(!CCCD_format.test(identification)){
+                    toastError("CCCD phải là 12 chữ số")
+                    return 
+                }
+
                 const register = {
                     full_name: full_name,
                     email: email,
@@ -44,9 +56,22 @@ const RegisterEmployeeForm = () => {
                     account_name: account_name,
                     password: password,
                 }
-                const registerData = await registerUser(register)
+                toastSuccess('Đang tạo tài khoản vui lòng chờ thông báo tiếp theo')
+                const registerData = await registerEmployee(register)
                 if (registerData.status) {
                     toastSuccess(registerData.message)
+                    setRegisterForm({
+                        full_name: "",
+                        email: "",
+                        phone_number:"",
+                        identification:"",
+                        date_of_birth:'',
+                        gender:0,
+                        address:"",
+                        account_name: "",
+                        password: "123456",
+                        confirm: "123456",
+                    })
                 } else {
                     toastError(registerData.message)
                 }
@@ -76,7 +101,7 @@ const RegisterEmployeeForm = () => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Control type='text'
+                            <Form.Control type='email'
                                 require="true"
                                 placeholder="Email"
                                 name="email"
@@ -105,13 +130,32 @@ const RegisterEmployeeForm = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Control type='date'
+                                ref={dateRef}
                                 require="true"
                                 placeholder="Ngày sinh"
                                 name="date_of_birth"
                                 value={date_of_birth}
                                 onChange={onChangeRegister}
+                                onFocus={() => {
+                                    dateRef.current.type = 'date'
+                                  }}
+                                  onBlur={() => {
+                                    dateRef.current.type = 'text'
+                                  }}
                             />
                         </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Control 
+                                 type='text'
+                                require="true"
+                                placeholder="Địa chỉ"
+                                name="address"
+                                value={address}
+                                onChange={onChangeRegister}
+                               
+                                
+                            />
+                        </Form.Group> 
                         <Form.Group className="mb-3" style={{textAlign: 'left'}}>
                                 <Form.Check
                                     inline
@@ -133,15 +177,7 @@ const RegisterEmployeeForm = () => {
                                     onChange={onChangeRegister}
                                 />
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Control type='text'
-                                require="true"
-                                placeholder="Địa chỉ"
-                                name="address"
-                                value={address}
-                                onChange={onChangeRegister}
-                            />
-                        </Form.Group> 
+                        
                         <Form.Group className="mb-3">
                             <Form.Control type='text'
                                 require="true"
@@ -151,7 +187,7 @@ const RegisterEmployeeForm = () => {
                                 onChange={onChangeRegister}
                             />
                         </Form.Group>                                                
-                        <Form.Group className="mb-3">
+                        {/* <Form.Group className="mb-3">
                             <Form.Control type='password'
                                 require="true"
                                 placeholder="Mật khẩu"
@@ -168,7 +204,7 @@ const RegisterEmployeeForm = () => {
                                 value={confirm}
                                 onChange={onChangeRegister}
                             />
-                        </Form.Group>
+                        </Form.Group> */}
                         <Button className="mt-3" variant='danger' type='submit'>Đăng kí</Button>
                     </Form>
                 </div>

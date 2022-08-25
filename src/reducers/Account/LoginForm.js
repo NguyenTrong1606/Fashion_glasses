@@ -41,23 +41,11 @@ export const updateAddressUser = createAsyncThunk(
 )
 
 const loginForm = createSlice({
-    name: "account/login",
+    name: "login",
     initialState: {
         authLoading: true,
         isAuthenticated: false,
-        // user: {
-        //     id_account: 0,
-        //     full_name :"",
-        //     email : "",
-        //     phone_number :"",                         
-        //     identification:"",                       
-        //     date_of_birth :"",
-        //     role: 0,            
-        //     status: 0,
-        //     avatar   :"",
-        //     gender :0,                   
-        //     address :"",
-        // },
+        
         account:{
             id_account: 0,
             account_name: "",

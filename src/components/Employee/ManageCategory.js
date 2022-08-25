@@ -30,7 +30,7 @@ const ManageCategory =() =>{
     const changePage = ({ selected }) => {
         setPageNumber(selected)
     }
-
+    
     const [activeEdit, setActiveEdit] = useState({
         active: false,
         index:0

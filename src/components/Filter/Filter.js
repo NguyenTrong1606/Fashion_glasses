@@ -14,16 +14,15 @@ import {
 } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { useParams, useLocation } from "react-router-dom"
+import { useParams,useLocation } from "react-router-dom"
+import { loadUser, userSelector } from "../../reducers/Account/LoginForm"
+import { filterProduct, filterProductSelector } from "../../reducers/Products/products"
 
-import { loadProductByBrand,productsSelector } from "../../reducers/Products/products"
-import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
-
-const ShowProductByBrand= () => {
+const FilterProduct= () => {
     
     const dispatch = useDispatch()
-    const { id_brand } = useParams()
-    const products = useSelector(productsSelector)
+    const { id_category, id_brand } = useParams()
+    const products = useSelector(filterProductSelector)
     const user = useSelector(userSelector)
     const location = useLocation()
     useEffect(() => {
@@ -33,8 +32,8 @@ const ShowProductByBrand= () => {
     const todoPerPage = 12
     const pagesVisited = pageNumber * todoPerPage
     useEffect(() => {
-        dispatch(loadProductByBrand(id_brand))
-    }, [dispatch, id_brand])
+        dispatch(filterProduct({id_category, id_brand}))
+    }, [dispatch, id_category, id_brand])
 
     const pageCount = Math.ceil(products.length / todoPerPage)
 
@@ -113,13 +112,13 @@ const ShowProductByBrand= () => {
                     <SliderCoverImage />
                 </Row>
                 <Row style={{ backgroundColor: '#F0F8FF' }}>
-                <h2 style={{color:'orange'}}>Nhãn hiệu: {location.state.name_brand} </h2>
+                <h2 style={{color:'orange'}}>Loại sản phẩm: {location.state.name_category} + Nhãn Hiệu: {location.state.name_brand} </h2>
                 <Row style={{ margin: '20px 0' }}>
                 {displayTodo}
                 </Row>
                 
             
-                {pageCount > 1?(
+                {pageCount>1?(
                     <div className="list-page">
                         <ReactPaginate
                             previousLabel={<i className="fa fa-chevron-left "></i>}
@@ -155,4 +154,4 @@ const ShowProductByBrand= () => {
 
 }
 
-export default ShowProductByBrand
+export default FilterProduct

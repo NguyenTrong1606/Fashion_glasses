@@ -200,7 +200,7 @@
 /* end footer */
 
 /* start voucher */
-.card-voucher b{
+.card-voucher b{ 
 	overflow: hidden;
     text-overflow: ellipsis;
     line-height: 25px;
@@ -248,7 +248,19 @@
     box-shadow: 0px 0px 13.94px 3.06px rgb(24 67 124 / 9%);
 	border-radius: 10px;
 	max-width: 250px;
+	height: 400px;
 	margin: 20px 10px ;
+}
+
+.card-product .card-title{
+	color: blue;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 25px;
+    -webkit-line-clamp: 2;
+    height: 50px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
 
 .card-product > * {
