@@ -33,6 +33,7 @@ import EnterNewPassword from "./components/Account/EnterNewPassword"
 import FilterProduct from "./components/Filter/Filter"
 import SearchOrderbyMaOrder from "./components/Employee/SearchOrderByMaOrder"
 import SearchOrderbyStatus from "./components/Employee/OrderByStatus"
+import OrdersChart from "./components/Employee/OrderChart"
 const routers = [
     {
         path: "/",
@@ -146,6 +147,11 @@ const routers = [
         path: "/employee/order/status/:status",
         exact: false,
         main: () => <ProtectedRouteEmployee component={SearchOrderbyStatus} />,
+    },
+    {
+        path: "/employee/order/chart/:year",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={OrdersChart} />,
     },
     {
         path: "/change/password",

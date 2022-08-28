@@ -261,8 +261,13 @@ const OrdersComplete =() =>{
                 <Button type='submit'> <span style={{ color: 'white' }}>
                             <i className="fas fa-search"></i>
                 </span></Button>
-                <div style={{flex:'2',}}></div>
+                <div style={{flex:'1',}}></div>
             </Form>
+            <div className="mt-3 mb-3" style={{flex:'1'}}><Button style={{textAlign:'center'}}
+            onClick={()=>{
+                history.push(`/employee/order/chart/${new Date().getFullYear()}`)
+            }}
+            >Biểu đồ</Button></div>
             <div className="mt-3 mb-3" style={{flex:'1'}}><Button style={{textAlign:'center'}}
             onClick={()=>{
                 setActiveFormAll(true)
@@ -302,7 +307,12 @@ const OrdersComplete =() =>{
                     <h3 style={{color:'green', margin:'10px auto'}} >Tổng doanh thu </h3>
             </Card.Title>
             <div className="border-bottom p-3 mb-0 d-flex flex-row ">
-            <div className="mt-3 mb-3" style={{flex:'9'}}></div>
+            <div className="mt-3 mb-3" style={{flex:'8'}}></div>
+            <div className="mt-3 mb-3" style={{flex:'1'}}><Button style={{textAlign:'center'}}
+            onClick={()=>{
+                history.push(`/employee/order/chart/${new Date().getFullYear()}`)
+            }}
+            >Biểu đồ</Button></div>
             <div className="mt-3 mb-3" style={{flex:'1'}}><Button style={{textAlign:'center'}}
             onClick={()=>{
                 setActiveFormAll(false)
