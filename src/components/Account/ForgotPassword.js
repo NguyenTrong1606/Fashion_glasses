@@ -10,6 +10,7 @@ const ForgotPassword = () => {
     const [account_name, setAccount_name] = useState("")
     const onSubmitForgotPassword = async (event) => {
         event.preventDefault()
+        toastSuccess("Đang gửi mã CODE đến email của bạn. Vui lòng chờ...!")
         const response = await forgotPassword(account_name)
         if (response.status === 200) {
             toastSuccess(response.message)

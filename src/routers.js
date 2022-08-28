@@ -31,6 +31,8 @@ import ForgotPassword from "./components/Account/ForgotPassword"
 import EnterCode from "./components/Account/EnterCode"
 import EnterNewPassword from "./components/Account/EnterNewPassword"
 import FilterProduct from "./components/Filter/Filter"
+import SearchOrderbyMaOrder from "./components/Employee/SearchOrderByMaOrder"
+import SearchOrderbyStatus from "./components/Employee/OrderByStatus"
 const routers = [
     {
         path: "/",
@@ -126,14 +128,24 @@ const routers = [
         main: () => <ProtectedRouteEmployee component={HomeEmployee} />,
     },
     {
-        path: "/employee/orders/search/:phone_number",
+        path: "/employee/orders/search/SDT/:phone_number",
         exact: false,
         main: () => <ProtectedRouteEmployee component={SearchOrderbySDT} />,
     },
     {
-        path: "/employee/order/complete/:year/:month",
+        path: "/employee/orders/search/MaHD/:id_order",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={SearchOrderbyMaOrder} />,
+    },
+    {
+        path: "/employee/order/complete",
         exact: false,
         main: () => <ProtectedRouteEmployee component={LoadOrderComplete} />,
+    },
+    {
+        path: "/employee/order/status/:status",
+        exact: false,
+        main: () => <ProtectedRouteEmployee component={SearchOrderbyStatus} />,
     },
     {
         path: "/change/password",

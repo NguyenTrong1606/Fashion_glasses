@@ -35,12 +35,14 @@ const RegisterEmployeeForm = () => {
         } else {
             try {
                 var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-                var CCCD_format=/(([0-9]{12})\b)/g
+                var CCCD_format=/^([0-9]{12})$/g
                 if(!vnf_regex.test(phone_number)){
                     toastError("SĐT phải có 10 số! Bắt đầu bằng 1 trong các cặp số 09, 03, 07, 08, 05")
                     return 
                 }
+                console.log(identification)
                 if(!CCCD_format.test(identification)){
+                    
                     toastError("CCCD phải là 12 chữ số")
                     return 
                 }

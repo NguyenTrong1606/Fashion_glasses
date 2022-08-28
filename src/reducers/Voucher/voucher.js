@@ -85,13 +85,15 @@ export const deleteVoucher = createAsyncThunk("delete/voucher", async (id_vouche
     }
 })
 
-export const addVoucher = createAsyncThunk("add/voucher", async (FormVoucher) => {
+export const addVoucher = createAsyncThunk("add/voucher", async ({fd, history}) => {
     try {
         const response = await axios.post(
             `http://localhost:8000/api/v1/voucher/`,
-            FormVoucher
+            fd
         )
         if (response.status === 200) {
+            history.push('/employee/category')
+            history.goBack()
             return await { ...response.data, status: response.status}
         }
     } catch (error) {

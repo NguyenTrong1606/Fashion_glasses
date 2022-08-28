@@ -11,7 +11,7 @@ import { loadOrdersHandle, ordersSelector, updateOrder} from "../../reducers/Ord
 import { voucherSelector, loadAllVoucher } from "../../reducers/Voucher/voucher"
 import Menu from "./Menu"
 
-const SearchOrderbySDT =() =>{
+const SearchOrderbyMaOrder =() =>{
 
     const dispatch = useDispatch()
     const user = useSelector(userSelector)
@@ -26,7 +26,7 @@ const SearchOrderbySDT =() =>{
     let monthNow = now.getMonth() + 1;
 
     const [pageNumber, setPageNumber] = useState(0)
-    const { phone_number } = useParams()
+    const { id_order } = useParams()
     const todoPerPage = 12
     const pagesVisited = pageNumber * todoPerPage
     const pageCount = Math.ceil(orders.length / todoPerPage)
@@ -49,8 +49,8 @@ const SearchOrderbySDT =() =>{
         dispatch(updateOrder(order))
     }
 
+    
     var check = 0
-
     const showListOrder = orders
     // .slice(pagesVisited, pagesVisited + todoPerPage)
     .map((order,index)=>{
@@ -58,6 +58,7 @@ const SearchOrderbySDT =() =>{
         var STT = index + 1
         var tong = 0
         var chietKhau = 0
+        
         
         
          
@@ -79,7 +80,7 @@ const SearchOrderbySDT =() =>{
             }
         })
         let changListOrder
-        if(order.account.phone_number.indexOf(phone_number) !== -1){
+        if(order.id_order == id_order){
             check = check+1
             changListOrder=(
                 <>
@@ -291,7 +292,7 @@ const SearchOrderbySDT =() =>{
                             <div style={{flex:'1', textAlign:'center'}}>
                             <Button  variant="info" style={{flex:'1'}}
                             onClick={() =>
-                                history.push(`/employee/order/status/3`)
+                                history.push(`/employee/order/status/0`)
                               }
                             >Chưa xác nhận</Button>
                             </div>
@@ -328,7 +329,7 @@ const SearchOrderbySDT =() =>{
  
             <Card>
             <Card.Title className="border-bottom p-3 mb-0 d-flex flex-row ">
-                    <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng có SDT có chứa:{phone_number} </h3>
+                    <h3 style={{color:'green', margin:'10px auto'}} > Tìm kiếm đơn hàng có mã số là :{id_order} </h3>
             </Card.Title>
             <Card.Body className="show-item">
                 <Table bordered>
@@ -388,4 +389,4 @@ const SearchOrderbySDT =() =>{
 
 }
 
-export default SearchOrderbySDT 
+export default SearchOrderbyMaOrder

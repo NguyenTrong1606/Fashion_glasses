@@ -11,6 +11,9 @@ const Menu = () => {
     useEffect(() => {
         dispatch(loadUser())
     }, [dispatch])
+    var date = new Date();
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const lastDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     return (
         <>
@@ -32,7 +35,7 @@ const Menu = () => {
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
-                                    Quản lý Hóa Đơn
+                                    Quản lý đơn hàng
                                 </Link>
                             </li>
                             {user.role === 2 && <li className="nav-item">
@@ -75,6 +78,19 @@ const Menu = () => {
                                     Quản lý mã giảm giá
                                 </Link>
                             </li>
+                            <li className="nav-item">
+                            <Link to={{pathname:`/employee/order/complete`,
+                            state: {
+                                firstDay: firstDay,
+                                lastDay: lastDay
+                            },
+                            }}  className="nav-link text-dark" >
+                                <span className='bi me-3'>
+                                    <i className="fas fa-heart"></i>
+                                </span>
+                                Thống kê Doanh thu
+                            </Link>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -105,7 +121,7 @@ const Menu = () => {
                                     <span className='bi me-3'>
                                         <i className="fas fa-heart"></i>
                                     </span>
-                                    Quản lý Hóa Đơn
+                                    Quản lý đơn hàng
                                 </Link>
                             </li>
                             {user.role === 2 &&
@@ -146,7 +162,20 @@ const Menu = () => {
                                 <span className='bi me-3'>
                                     <i className="fas fa-heart"></i>
                                 </span>
-                                Quản lý Voucher
+                                Quản lý Mã giảm giá
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to={{pathname:`/employee/order/complete`,
+                            state: {
+                                firstDay: firstDay,
+                                lastDay: lastDay
+                            },
+                            }} className="nav-link text-dark" >
+                                <span className='bi me-3'>
+                                    <i className="fas fa-heart"></i>
+                                </span>
+                                Thống kê Doanh thu
                             </Link>
                         </li>
                     </ul>

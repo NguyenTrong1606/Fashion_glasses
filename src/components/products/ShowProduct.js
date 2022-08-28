@@ -177,9 +177,9 @@ const ShowProduct = ()=>{
                             <p>
                             {discountPrice}				 
                             </p>
-                            <p style={{fontSize: '16px', marginTop: '5px'}}>Mô tả:<br/>
-                                Loại sản phẩm: {product.category}<br/>
-                                Nhãn hiệu: {product.brand}
+                            <p style={{fontSize: '16px', marginTop: '5px'}}><b>Mô tả:</b><br/>
+                                <b>Loại sản phẩm: {product.category}</b><br/>
+                                <b>Nhãn hiệu: {product.brand}</b>
                              {moTa}</p>
                         </div>
                         <Row className="btn-orders">	

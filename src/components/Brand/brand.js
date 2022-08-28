@@ -15,42 +15,42 @@ const FetchBrand =() =>{
     const idCate = localStorage.getItem('idCategory')
     const nameCate = localStorage.getItem('nameCategory')
 
-    const handleURL = (id_brand, name_brand) =>{
-        if(idCate){
-            localStorage.setItem('idBrand', id_brand)
-            localStorage.setItem('nameBrand', name_brand)
-            history.push({pathname:`/category/${idCate}/brand/${id_brand}/filter`,
-            state:{
-                name_brand: name_brand,
-                name_category: nameCate,
-            }
-            });
+    // const handleURL = (id_brand, name_brand) =>{
+    //     if(idCate){
+    //         localStorage.setItem('idBrand', id_brand)
+    //         localStorage.setItem('nameBrand', name_brand)
+    //         history.push({pathname:`/category/${idCate}/brand/${id_brand}/filter`,
+    //         state:{
+    //             name_brand: name_brand,
+    //             name_category: nameCate,
+    //         }
+    //         });
             
 
-        }else{
-            localStorage.removeItem('link')
-            localStorage.setItem('idBrand', id_brand)
-            localStorage.setItem('nameBrand', name_brand)
-            history.push({
-                pathname:`/brand/${id_brand}/product`,
-                state: {name_brand},
-            })
+    //     }else{
+    //         localStorage.removeItem('link')
+    //         localStorage.setItem('idBrand', id_brand)
+    //         localStorage.setItem('nameBrand', name_brand)
+    //         history.push({
+    //             pathname:`/brand/${id_brand}/product`,
+    //             state: {name_brand},
+    //         })
             
 
-        }
-    }
+    //     }
+    // }
 
     const getBrand = listBrand.map((brand) =>{
         const name_brand = brand.name_brand
         return(            
             <NavDropdown.Item 
-            // as={Link} 
-            // to={{
-            //     pathname:`/brand/${brand.id_brand}/product`,
-            //     state: {name_brand},
-            // }}
-            // onClick={()=>localStorage.removeItem('link')}
-            onClick={()=>handleURL(brand.id_brand,brand.name_brand)}
+            as={Link} 
+            to={{
+                pathname:`/brand/${brand.id_brand}/product`,
+                state: {name_brand},
+            }}
+            onClick={()=>localStorage.removeItem('link')}
+            // onClick={()=>handleURL(brand.id_brand,brand.name_brand)}
              key={brand.id_brand} style={{textTransfrom:'capitalize'}}>
         
                     {brand.name_brand}

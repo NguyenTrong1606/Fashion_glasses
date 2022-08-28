@@ -12,7 +12,7 @@ import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
 const ShowReview = ()=>{
     const dispatch = useDispatch()
     let reviews = useSelector(reviewSelector)
-    let numberStar = useSelector(starReviewSelector)
+    // let numberStar = useSelector(starReviewSelector)
     const { id_product } = useParams()
     const [reviewForm, setReviewForm] = useState({
         star_number: 0,
@@ -28,7 +28,7 @@ const ShowReview = ()=>{
 
     useEffect(() => {
         dispatch(loadUser())
-        dispatch(loadStarReview(id_product))
+        // dispatch(loadStarReview(id_product))
         dispatch(loadReview(id_product))
     }, [dispatch, id_product])
 
@@ -62,7 +62,12 @@ const ShowReview = ()=>{
     }
     const {star_number, content} = reviewForm
 
+    let averageStar = 0
+    let number = 0
+
     const listReview = reviews.slice(pagesVisited, pagesVisited + todoPerPage).map((review,index)=>{
+        averageStar = +averageStar + review.star_number
+        number = number +1
         return(
             <div className="read-comment" key={index}>
             <Card
@@ -132,7 +137,7 @@ const ShowReview = ()=>{
                                         
                                     }}>
 
-                            <h1 style={{fontSize:'50px', color:'red', marginLeft:'50px'}}>{numberStar}/5 <img src={Star} width='50px' height='auto'></img></h1>
+                            <h1 style={{fontSize:'50px', color:'red', marginLeft:'50px'}}>{averageStar/number}/5 <img src={Star} width='50px' height='auto'></img></h1>
                             <h6>{'('} {reviews.length} đánh giá {'&'} nhận xét {')'}</h6>                              
                         </Col>
                         <Col md={3} style={{
@@ -168,7 +173,7 @@ const ShowReview = ()=>{
                                 <Form.Check
                                     inline
                                     label="không Thích (1 Sao)"
-                                    name="start_number"
+                                    name="star_number"
                                     type="radio"
                                     id={`inline-radio-1`}
                                     value="1"

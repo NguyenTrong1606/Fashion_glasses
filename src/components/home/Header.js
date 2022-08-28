@@ -88,6 +88,9 @@ const Header = ({
                     <Dropdown.Item as={Link} to="/change/password">
                         Thay đổi mật khẩu
                     </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/account/my-order">
+                        Đơn hàng của tôi
+                    </Dropdown.Item>
                     <Dropdown.Item
                         as={Link}
                         to="/"
@@ -130,6 +133,9 @@ const Header = ({
                     <Dropdown.Item as={Link} to="/change/password">
                         Thay đổi mật khẩu
                     </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/account/my-order">
+                        Đơn hàng của tôi
+                    </Dropdown.Item>
                     <Dropdown.Item as={Link} to="/employee/home">
                         Trang quản lý
                     </Dropdown.Item>
@@ -167,10 +173,10 @@ const Header = ({
                     <Navbar.Brand>
                         <label htmlFor='nav-mobile-input'>
                         <Link to="/" onClick={()=>{localStorage.removeItem('link')
-                            localStorage.removeItem('idBrand')
-                            localStorage.removeItem('nameBrand')
-                            localStorage.removeItem('idCategory')
-                            localStorage.removeItem('nameCategory')
+                            // localStorage.removeItem('idBrand')
+                            // localStorage.removeItem('nameBrand')
+                            // localStorage.removeItem('idCategory')
+                            // localStorage.removeItem('nameCategory')
                         }}>
                             <img
                                 className="title"
@@ -184,8 +190,8 @@ const Header = ({
                         
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
-                        <FetchCategory/>
-                        <FetchBand/>
+                        {/* <FetchCategory/>
+                        <FetchBand/> */}
                         <Nav style={{ marginTop: '10px' }} className="me-auto my-2 my-lg-0">
                             <Form className="d-flex search" onSubmit={onSubmitSearch} >
                                 <FormControl

@@ -147,13 +147,15 @@ export const deleteProduct = createAsyncThunk("delete/product", async (id_produc
     }
 })
 
-export const addProduct = createAsyncThunk("add/product", async (FormProduct) => {
+export const addProduct = createAsyncThunk("add/product", async ({fd, history}) => {
     try {
         const response = await axios.post(
             `http://localhost:8000/api/v1/product/`,
-            FormProduct
+            fd
         )
         if (response.status === 200) {
+            history.push('/employee/category')
+            history.goBack()
             return await { ...response.data, status: response.status}
         }
     } catch (error) {

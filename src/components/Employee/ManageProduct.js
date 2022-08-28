@@ -81,8 +81,12 @@ const ManageProduct = () => {
 
   const date_covert = formProduct.date_discount_end
 
-  const delProduct = (id_product) => {
-    dispatch(deleteProduct(id_product));
+  const delProduct = (id_product, name_product) => {
+    var result = window.confirm(`Bạn có chắc muốn xóa sản phẩm ${name_product} ko?`)
+    if(result){
+      dispatch(deleteProduct(id_product));
+    }
+    
   };
 
   const onChangeAddProduct = (event) => {
@@ -99,19 +103,6 @@ const ManageProduct = () => {
   const onSubmitAddProduct = (event) => {
     event.preventDefault();
     const fd = new FormData();
-    // if(!price_format.test(formProduct.price)){
-    //   console.log(typeof formProduct.price)
-    //   toastError("Giá Tiền phải là số và không bắt đầu bằng số 0")
-    //   return 
-    // }
-    // if(!price_format.test(formProduct.quantity)){
-    //   toastError("Số lượng trong kho phải là số và không bắt đầu bằng số 0")
-    //   return 
-    // }
-    // if(!discount_format.test(formProduct.quantity)){
-    //   toastError("Giảm giá phải 2 chữ số. VD:01, 02, 99")
-    //   return 
-    // }
 
     fd.append("name_product", formProduct.name_product);
     fd.append("description", formProduct.description);
@@ -127,7 +118,7 @@ const ManageProduct = () => {
     fd.append("img4", images[3] || new Blob([]), images[3]?.name || "");
     fd.append("img5", images[4] || new Blob([]), images[4]?.name || "");
     toastSuccess("Đang thêm Sản phẩm vui lòng chờ giây lát....")
-    dispatch(addProduct(fd));
+    dispatch(addProduct({fd, history}));
   };
 
   const onSubmitUpdateProduct = (event) => {
@@ -249,7 +240,7 @@ const ManageProduct = () => {
             <td>
               <Button
                 variant="danger"
-                onClick={() => delProduct(product.id_product)}
+                onClick={() => delProduct(product.id_product, product.name_product)}
               >
                 <i className="far fa-trash-alt fa-x"></i>
               </Button>
@@ -414,6 +405,7 @@ const ManageProduct = () => {
                   type="number"
                   require="true"
                   placeholder="Số lượng trong kho"
+                  min='0'
                   name="quantity"
                   value={quantity}
                   onChange={onChangeAddProduct}
@@ -423,7 +415,7 @@ const ManageProduct = () => {
                 <Form.Control
                   type="number"
                   require="true"
-                  placeholder="Giảm giá (Tính Theo %).VD: nhập 10 => 10%"
+                  placeholder="Giảm giá (Tính Theo %)"
                   min="0" max="99"
                   name="discount"
                   value={discount}

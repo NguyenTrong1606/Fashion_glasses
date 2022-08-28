@@ -263,6 +263,10 @@
     -webkit-box-orient: vertical;
 }
 
+.card-product .card-img-top{
+	min-height: 220px
+}
+
 .card-product > * {
 	position: relative;
 	font-size: 14px;

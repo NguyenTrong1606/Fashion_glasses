@@ -7,11 +7,12 @@ import Footer from "../home/Footer"
 import { Link, useHistory } from "react-router-dom"
 import { Col, Container, Row,Button, Form, Card,Table,FormControl } from "react-bootstrap"
 import { loadUser,userSelector } from "../../reducers/Account/LoginForm"
-import { loadOrdersHandle, ordersSelector, updateOrder} from "../../reducers/Orders/orders"
+import { loadOrdersByStatus, loadOrdersHandle, ordersSelector, updateOrder} from "../../reducers/Orders/orders"
 import { voucherSelector, loadAllVoucher } from "../../reducers/Voucher/voucher"
 import Menu from "./Menu"
+import { productDetailSelector } from "../../reducers/Products/products"
 
-const SearchOrderbySDT =() =>{
+const SearchOrderbyStatus =() =>{
 
     const dispatch = useDispatch()
     const user = useSelector(userSelector)
@@ -21,20 +22,19 @@ const SearchOrderbySDT =() =>{
     const vouchers = useSelector(voucherSelector)
     const orders = useSelector(ordersSelector)
 
-    let now = new Date()
-    let yearNow = now.getFullYear();
-    let monthNow = now.getMonth() + 1;
-
     const [pageNumber, setPageNumber] = useState(0)
-    const { phone_number } = useParams()
+    const { status } = useParams()
     const todoPerPage = 12
     const pagesVisited = pageNumber * todoPerPage
     const pageCount = Math.ceil(orders.length / todoPerPage)
     useEffect(() => {
         dispatch(loadUser())
-        dispatch(loadOrdersHandle())
         dispatch(loadAllVoucher())
     }, [dispatch])
+
+    useEffect(()=>{
+        dispatch(loadOrdersByStatus(status))
+    },[dispatch, status])
 
     const [activeDetail, setActiveDetail] = useState({
         active: false,
@@ -49,11 +49,8 @@ const SearchOrderbySDT =() =>{
         dispatch(updateOrder(order))
     }
 
-    var check = 0
-
-    const showListOrder = orders
-    // .slice(pagesVisited, pagesVisited + todoPerPage)
-    .map((order,index)=>{
+    
+    const showListOrder = orders.slice(pagesVisited, pagesVisited + todoPerPage).map((order,index)=>{
         
         var STT = index + 1
         var tong = 0
@@ -78,62 +75,60 @@ const SearchOrderbySDT =() =>{
                 chietKhau = voucher.discount
             }
         })
-        let changListOrder
-        if(order.account.phone_number.indexOf(phone_number) !== -1){
-            check = check+1
-            changListOrder=(
-                <>
-                <tr key={order.id_order} style={{textAlign: 'center', color:'blue', fontWeight:'600'}}>
-                    <td>{STT}</td>
-                    <td >{order.id_order}</td>
-                    <td>{order.account.full_name}</td>
-                    <td>{order.account.phone_number}</td>
-                    <td style={{textAlign: 'left'}}>{order.address}</td>
-                    <td>{order.day} - {order.time}</td>
-                    <td className="d-flex flex-column">
-                        {order.status===0 && <h6 style={{lineHeight:'100px'}}>chờ xác nhận</h6>}
-                        {order.status===1 && <h6 style={{lineHeight:'100px'}}>Đã xác nhận</h6>}
-                        { order.status===2 && <h6 style={{lineHeight:'100px'}}>Đang giao</h6>}
-                        {order.status===3 && <h6 style={{lineHeight:'100px'}}>Đã giao</h6>}
-                        {order.status===4 && <h6 style={{lineHeight:'100px'}}>Shop hủy đơn</h6>}
-                        
-                    </td>
-                    <td><Button variant="link" 
-                        onClick={() =>
-                            setActiveDetail({
-                                active:!activeDetail.active,
-                                index: index
-                            })
-                        }
-                    >Xem chi tiết</Button></td>
-                    <td>
-                                {order.status===0 && <Button variant="success" 
-                                    onClick={() =>
-                                        updateStatusOrder(
-                                            order.id_order,
-                                            1
-                                        )
-                                    }
-                                > XÁC NHẬN </Button>}
-                                { order.status===1 && <Button variant="success" 
-                                    onClick={() =>
-                                        updateStatusOrder(
-                                            order.id_order,
-                                            2
-                                        )
-                                    }
-                                > ĐANG GIAO </Button>}
-                                {order.status===2 && <Button variant="success" 
-                                    onClick={() =>
-                                        updateStatusOrder(
-                                            order.id_order,
-                                            3
-                                        )
-                                    }
-                                > ĐÃ GIAO </Button>}
+        
+        return(
+            <>
+            <tr key={order.id_order} style={{textAlign: 'center', color:'blue', fontWeight:'600'}}>
+              <td>{STT}</td>
+              <td >{order.id_order}</td>
+              <td>{order.account.full_name}</td>
+              <td>{order.account.phone_number}</td>
+              <td style={{textAlign: 'left'}}>{order.address}</td>
+              <td>{order.day} - {order.time}</td>
+              <td className="d-flex flex-column">
+                {order.status===0 && <h6 style={{lineHeight:'100px'}}>chờ xác nhận</h6>}
+                {order.status===1 && <h6 style={{lineHeight:'100px'}}>Đã xác nhận</h6>}
+                { order.status===2 && <h6 style={{lineHeight:'100px'}}>Đang giao</h6>}
+                {order.status===3 && <h6 style={{lineHeight:'100px'}}>Đã giao</h6>}
+                {order.status===4 && <h6 style={{lineHeight:'100px'}}>Shop hủy đơn</h6>}
+                
+              </td>
+              <td><Button variant="link" 
+                onClick={() =>
+                    setActiveDetail({
+                        active:!activeDetail.active,
+                        index: index
+                    })
+                }
+              >Xem chi tiết</Button></td>
+              <td>
+                        {order.status===0 && <Button variant="success" 
+                            onClick={() =>
+                                updateStatusOrder(
+                                    order.id_order,
+                                    1
+                                )
+                            }
+                        > XÁC NHẬN </Button>}
+                        { order.status===1 && <Button variant="success" 
+                            onClick={() =>
+                                updateStatusOrder(
+                                    order.id_order,
+                                    2
+                                )
+                            }
+                        > ĐANG GIAO </Button>}
+                        {order.status===2 && <Button variant="success" 
+                            onClick={() =>
+                                updateStatusOrder(
+                                    order.id_order,
+                                    3
+                                )
+                            }
+                        > ĐÃ GIAO </Button>}
 
-                    </td>
-                    <td>{order.status >2?<></>:<Button variant="danger" onClick={() =>
+              </td>
+              <td>{order.status >2?<></>:<Button variant="danger" onClick={() =>
                                 updateStatusOrder(
                                     order.id_order,
                                     4
@@ -143,63 +138,53 @@ const SearchOrderbySDT =() =>{
                     <i className="far fa-trash-alt fa-x"   
                     ></i>
                   </Button>}
+              </td>
+            </tr>
+            {
+                (activeDetail.active && activeDetail.index === index) && (
+                    <tr  key={index}>
+                    <td colSpan={10}>
+                        <Card>
+                            <Card.Title className="border-bottom p-3 mb-0 d-flex flex-row ">
+                                    <h3 style={{color:'green', margin:'10px auto'}} >Chi tiết đơn hàng</h3>
+                            </Card.Title>
+                            <Card.Body className="show-item">
+                                <Table bordered>
+                                <thead>
+                                    <tr style={{textAlign: 'center'}}>
+                                        <th style={{width:'40%', lineHeight:'28px',textAlign: 'left'}}>Tên Sản phẩm</th>
+                                        <th style={{width:'2%', lineHeight:'28px'}}>Giá</th>
+                                        <th style={{width:'15%', lineHeight:'28px'}}>Số lượng</th>   
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {ShowDeltail}
+                                </tbody>
+                                </Table>
+                            </Card.Body>
+                            <div className="d-flex flex-column mb-3">
+                                <div className="d-flex flex-row" style={{height:'50px'}}>
+                                    <h4 style={{flex:'3', lineHeight:'50px', color:'red',textAlign:'right'}}>Tổng:</h4>
+                                    <h5 style={{flex:'1', lineHeight:'50px', color:'blue', textAlign:'center'}}>{tong.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</h5>
+                                </div>
+                                <div className="d-flex flex-row" style={{height:'50px'}}>
+                                    <h4 style={{flex:'3', lineHeight:'50px', color:'red',textAlign:'right'}}>Chiết khấu:</h4>
+                                    <h5 style={{flex:'1', lineHeight:'50px', color:'blue', textAlign:'center'}}>
+                                        {chietKhau}%
+                                    </h5>
+                                </div>
+                                <div className="d-flex flex-row" style={{height:'50px'}}>
+                                    <h4 style={{flex:'3', lineHeight:'50px', color:'red',textAlign:'right'}}>Thành Tiền:</h4>
+                                    <h5 style={{flex:'1', lineHeight:'50px', color:'blue', textAlign:'center'}}>{(tong-tong*chietKhau/100).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</h5>
+                                </div>
+                            </div>
+                        </Card>
                     </td>
-                    </tr>
-                    {
-                        (activeDetail.active && activeDetail.index === index) && (
-                            <tr  key={index}>
-                            <td colSpan={10}>
-                                <Card>
-                                    <Card.Title className="border-bottom p-3 mb-0 d-flex flex-row ">
-                                            <h3 style={{color:'green', margin:'10px auto'}} >Chi tiết đơn hàng</h3>
-                                    </Card.Title>
-                                    <Card.Body className="show-item">
-                                        <Table bordered>
-                                        <thead>
-                                            <tr style={{textAlign: 'center'}}>
-                                                <th style={{width:'40%', lineHeight:'28px',textAlign: 'left'}}>Tên Sản phẩm</th>
-                                                <th style={{width:'2%', lineHeight:'28px'}}>Giá</th>
-                                                <th style={{width:'15%', lineHeight:'28px'}}>Số lượng</th>   
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {ShowDeltail}
-                                        </tbody>
-                                        </Table>
-                                    </Card.Body>
-                                    <div className="d-flex flex-column mb-3">
-                                        <div className="d-flex flex-row" style={{height:'50px'}}>
-                                            <h4 style={{flex:'3', lineHeight:'50px', color:'red',textAlign:'right'}}>Tổng:</h4>
-                                            <h5 style={{flex:'1', lineHeight:'50px', color:'blue', textAlign:'center'}}>{tong.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</h5>
-                                        </div>
-                                        <div className="d-flex flex-row" style={{height:'50px'}}>
-                                            <h4 style={{flex:'3', lineHeight:'50px', color:'red',textAlign:'right'}}>Chiết khấu:</h4>
-                                            <h5 style={{flex:'1', lineHeight:'50px', color:'blue', textAlign:'center'}}>
-                                                {chietKhau}%
-                                            </h5>
-                                        </div>
-                                        <div className="d-flex flex-row" style={{height:'50px'}}>
-                                            <h4 style={{flex:'3', lineHeight:'50px', color:'red',textAlign:'right'}}>Thành Tiền:</h4>
-                                            <h5 style={{flex:'1', lineHeight:'50px', color:'blue', textAlign:'center'}}>{(tong-tong*chietKhau/100).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</h5>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </td>
-                            
-                        </tr>
-                        )
-                    }
                     
-                </>
-            )
-        }
-        else{
-            changListOrder=(<></>)
-        }
-        return(
-            <>
-            
-                {changListOrder}
+                </tr>
+                )
+            }
+           
             
             </>
 
@@ -291,7 +276,7 @@ const SearchOrderbySDT =() =>{
                             <div style={{flex:'1', textAlign:'center'}}>
                             <Button  variant="info" style={{flex:'1'}}
                             onClick={() =>
-                                history.push(`/employee/order/status/3`)
+                                history.push(`/employee/order/status/0`)
                               }
                             >Chưa xác nhận</Button>
                             </div>
@@ -328,7 +313,11 @@ const SearchOrderbySDT =() =>{
  
             <Card>
             <Card.Title className="border-bottom p-3 mb-0 d-flex flex-row ">
-                    <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng có SDT có chứa:{phone_number} </h3>
+                    {status == 0 && <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng chưa xác nhận </h3>}
+                    {status == 1 && <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng đã xác nhận </h3>}
+                    {status == 2 && <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng đang giao </h3>}
+                    {status == 3 && <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng đã giao </h3>}
+                    {status == 4 && <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng đã hủy </h3>}
             </Card.Title>
             <Card.Body className="show-item">
                 <Table bordered>
@@ -347,15 +336,15 @@ const SearchOrderbySDT =() =>{
                     </tr>
                 </thead>
                 <tbody>
-                    {showListOrder}
-                    {check == 0 &&<><tr>
-                        <td colSpan={10}><div style={{color: '#1699c1', fontSize:'32px', fontWeight:'600', minHeight:'100px', lineHeight:'100px', textAlign:'center'}}>Không tìm thấy đơn hàng</div></td>
+                {orders.length === 0 &&<><tr>
+                        <td colSpan={10}><div style={{color: '#1699c1', fontSize:'32px', fontWeight:'600', minHeight:'100px', lineHeight:'100px', textAlign:'center'}}>Không có đơn hàng nào</div></td>
                         </tr></> }
+                    {showListOrder}
                 </tbody>
                 
                 </Table>
             </Card.Body>
-            {/* {pageCount >1?
+            {pageCount >1?
                     <ReactPaginate
                         style={{textAlign: 'center'}}
                             previousLabel={<i className="fa fa-chevron-left "></i>}
@@ -376,7 +365,7 @@ const SearchOrderbySDT =() =>{
                             marginPagesDisplayed={1}
                             pageRangeDisplayed={2}
                         />:<></>
-                    } */}
+                    }
             </Card>
             </Col>
                 </Row>
@@ -388,4 +377,4 @@ const SearchOrderbySDT =() =>{
 
 }
 
-export default SearchOrderbySDT 
+export default SearchOrderbyStatus

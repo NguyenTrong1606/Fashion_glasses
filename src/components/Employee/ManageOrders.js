@@ -18,7 +18,7 @@ const ManageOrders =() =>{
     const vouchers = useSelector(voucherSelector)
     const orders = useSelector(ordersSelector)
     const [pageNumber, setPageNumber] = useState(0)
-    const todoPerPage = 12
+    const todoPerPage = 5
     const pagesVisited = pageNumber * todoPerPage
     const pageCount = Math.ceil(orders.length / todoPerPage)
     useEffect(() => {
@@ -136,7 +136,7 @@ const ManageOrders =() =>{
                         > ĐÃ GIAO </Button>}
 
               </td>
-              <td>{order.status ===3?<></>:<Button variant="danger" onClick={() =>
+              <td>{order.status >2?<></>:<Button variant="danger" onClick={() =>
                                 updateStatusOrder(
                                     order.id_order,
                                     4
@@ -208,7 +208,7 @@ const ManageOrders =() =>{
  
             <Card>
             <Card.Title className="border-bottom p-3 mb-0 d-flex flex-row ">
-                    <h3 style={{color:'green', margin:'10px auto'}} >Danh sách đơn hàng cần xử lý </h3>
+                    <h3 style={{color:'green', margin:'10px auto'}} >Danh sách tất cả đơn hàng </h3>
             </Card.Title>
             <Card.Body className="show-item">
                 <Table bordered>

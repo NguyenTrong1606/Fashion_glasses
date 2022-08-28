@@ -85,7 +85,7 @@ const ManageVoucher = () => {
       fd.append("date_end", covert_date_end);
       fd.append("description", description);
       
-      dispatch(addVoucher(fd));
+      dispatch(addVoucher({fd, history}));
     }else{
       const data= {
       id_voucher: id_voucher,
@@ -326,9 +326,9 @@ const ManageVoucher = () => {
                 />
               </Form.Group>
               {activeForm?<Form.Group className="mb-3" style={{textAlign:'left'}} >
-                <Form.Label>Giá trị của mã</Form.Label>
+                <Form.Label>Giá trị của mã {'('}Tính Theo %{')'}</Form.Label>
                 <Form.Control
-                  type="numeric"
+                  type="number"
                   require="true"
                   placeholder="Giảm Tính Theo %.VD: nhập 10 => giảm 10%..."
                   name="discount"
@@ -337,7 +337,7 @@ const ManageVoucher = () => {
                 />
               </Form.Group>:
               <Form.Group className="mb-3" style={{textAlign:'left'}} >
-              <Form.Label>Giá trị của mã</Form.Label>
+              <Form.Label>Giá trị của mã {'('}Tính Theo %{')'}</Form.Label>
               <Form.Control
                 disabled
                 type="numeric"

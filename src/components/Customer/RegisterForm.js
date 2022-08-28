@@ -104,7 +104,6 @@ const RegisterForm = () => {
                                     name="gender"
                                     type="radio"
                                     id={`inline-radio-1`}
-                                    checked="checked"
                                     value="0"
 
                                     onChange={onChangeRegister}

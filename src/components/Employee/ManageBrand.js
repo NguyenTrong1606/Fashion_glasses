@@ -46,9 +46,13 @@ const ManageBrand =() =>{
         dispatch(updateBrand(brand))
     }
 
-    const delBrand = (idBrand) => {
+    const delBrand = (idBrand, nameBrand) => {
         const id_brand = idBrand
-        dispatch(deleteBrand(id_brand))
+        var result = window.confirm(`Bạn có chắc muốn xóa nhãn hiệu ${nameBrand} ko?`)
+        if(result){
+            dispatch(deleteBrand(id_brand))
+        }
+        
     }
 
 
@@ -94,7 +98,7 @@ const ManageBrand =() =>{
                             </div>
                             <div style={{flex:'2'}}><Button variant="danger" 
                             onClick={() =>
-                                    delBrand(brand.id_brand)
+                                    delBrand(brand.id_brand, brand.name_brand)
                                 }
                             >
                         <i className="far fa-trash-alt fa-x"   
@@ -131,7 +135,7 @@ const ManageBrand =() =>{
                 <Col xl={6} lg={4}>
                 <Card>
                     <Card.Title className="border-bottom p-3 mb-0 d-flex flex-row ">
-                            <h3 style={{color:'green', margin:'10px auto'}} >Quản Lý Danh Mục Sản Phẩm</h3>
+                            <h3 style={{color:'green', margin:'10px auto'}} >Quản Lý Nhãn Hiệu</h3>
                     </Card.Title>
                     
                     
@@ -139,7 +143,7 @@ const ManageBrand =() =>{
                         
                         <div className="d-flex flex-row" style={{color:'#174b97', textAlign:'center', height:'80px', borderBottom:'1px solid gray'}}>
                         <h5 style={{flex:'1'}}>#</h5>
-                        <h5 style={{flex:'5', textAlign:'left'}}>Tên Danh Mục Sản Phẩm</h5>
+                        <h5 style={{flex:'5', textAlign:'left'}}>Tên Nhãn Hiệu</h5>
                         <h5 style={{flex:'2'}}>Sửa</h5>
                         <h5 style={{flex:'2'}}>Xóa</h5>
                         
@@ -176,7 +180,7 @@ const ManageBrand =() =>{
 
                 </Col>
                 <Col xl={4} lg={4}>
-                <h2 style={{margin:'20px 20px 40px'}}>Thêm danh mục sản phẩm</h2>
+                <h2 style={{margin:'20px 20px 40px'}}>Thêm nhãn hiệu</h2>
                             <Form className="d-flex flex-row" style={{textAlign:'center',}} onSubmit={onSubmitAddBrandNew}>
                                 
                                 <FormControl type='text' name='name_brand' 

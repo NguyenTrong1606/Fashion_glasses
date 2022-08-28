@@ -35,6 +35,23 @@ export const loadOrdersHandle = createAsyncThunk(
   }
 );
 
+export const loadOrdersByStatus = createAsyncThunk(
+  "orders/status/fetch",
+  async (status) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/orders/status/${status}`
+      );
+      if (response.status === 200) {
+        return await { ...response.data, status: response.status };
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { message: error.message };
+    }
+  }
+);
+
 export const loadOrdersComplete = createAsyncThunk(
   "orders/complete/fetch",
   async ({ year, month }) => {
@@ -150,6 +167,14 @@ const Orders = createSlice({
         }
       })
 
+      .addCase(loadOrdersByStatus.fulfilled, (state, action) => {
+        if (action.payload.status === 200) {
+          state.orders = action.payload.data;
+        } else {
+          toastError(action.payload.message);
+        }
+      })
+
       .addCase(loadOrdersComplete.fulfilled, (state, action) => {
         if (action.payload.status === 200) {
           state.orders = action.payload.data;
@@ -176,11 +201,7 @@ const Orders = createSlice({
 
       .addCase(updateOrder.fulfilled, (state, action) => {
         if (action.payload.status === 200) {
-          if (action.payload.data.status === 4) {
-            state.orders = state.orders.filter(
-              (order) => order.id_order !== action.payload.data.id_order
-            );
-          } else {
+          
             state.orders = state.orders.map((order) => {
               if (order.id_order === action.payload.data.id_order) {
                 return action.payload.data;
@@ -188,7 +209,6 @@ const Orders = createSlice({
                 return order;
               }
             });
-          }
         } else {
           toastError(action.payload.message);
         }

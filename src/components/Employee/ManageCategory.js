@@ -46,9 +46,13 @@ const ManageCategory =() =>{
         dispatch(updateCategory(category))
     }
 
-    const delCategory = (idCategory) => {
+    const delCategory = (idCategory, nameCategory) => {
         const id_category = idCategory
-        dispatch(deleteCategory(id_category))
+        var result = window.confirm(`Bạn có chắc muốn xóa danh mục ${nameCategory} ko?`)
+        if(result){
+            dispatch(deleteCategory(id_category))
+        }
+        
     }
 
 
@@ -94,7 +98,7 @@ const ManageCategory =() =>{
                             </div>
                             <div style={{flex:'2'}}><Button variant="danger" 
                             onClick={() =>
-                                    delCategory(category.id_category)
+                                    delCategory(category.id_category, category.name_category)
                                 }
                             >
                         <i className="far fa-trash-alt fa-x"   

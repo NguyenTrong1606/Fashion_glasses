@@ -14,6 +14,7 @@ import ManageOrders from "./ManageOrders"
 const HomeEmployee = () => {
     const dispatch = useDispatch()
     const [sDT, setSDT] = useState("")
+    const [maDH, setMaDH] = useState("")
     const history = useHistory()
     let user = useSelector(userSelector)
 
@@ -26,12 +27,21 @@ const HomeEmployee = () => {
     }, [dispatch])
 
 
-    const onSubmitSearch = (event) => {
+    const onSubmitSearchSDT = (event) => {
         event.preventDefault()
         if(sDT==""){
             history.push('/employee/home')
         }else{
-            history.push(`/employee/orders/search/${sDT}`)
+            history.push(`/employee/orders/search/SDT/${sDT}`)
+        }
+        
+    }
+    const onSubmitSearchMaDH = (event) => {
+        event.preventDefault()
+        if(maDH==""){
+            history.push('/employee/home')
+        }else{
+            history.push(`/employee/orders/search/MaHD/${maDH}`)
         }
         
     }
@@ -51,12 +61,12 @@ const HomeEmployee = () => {
                 <Menu />
                 <Col xl={10} lg={9}>
                     <div className="d-flex flex-row mb-3">
-                            <div className="d-flex flex-row" style={{flex:'2', margin:'0 auto'}}>
-                            <Form className="d-flex" onSubmit={onSubmitSearch} >
+                            <div className="d-flex flex-row" style={{flex:'1', margin:'0 auto'}}>
+                            <Form className="d-flex" onSubmit={onSubmitSearchSDT} >
                                 <FormControl
-                                    style={{width:'250px'}}
+                                    style={{width:'200px'}}
                                     type="search"
-                                    placeholder="Tìm kiếm hóa đơn theo SĐT"
+                                    placeholder="Tìm kiếm theo SĐT"
                                     aria-label="Search"
                                     name="searchSDT"
                                     value={sDT}
@@ -68,13 +78,60 @@ const HomeEmployee = () => {
                                 </span></Button>
                             </Form>
                             </div>
-                            <div style={{flex:'1', textAlign:'center'}}>
-                            <Button  variant="danger"
-                            onClick={() =>
-                                history.push(`/employee/order/complete/${yearNow}/${monthNow}`)
-                              }
-                            >Hóa Đơn Đã hoàn thành</Button>
+                            <div className="d-flex flex-row" style={{flex:'1', margin:'0 auto'}}>
+                            <Form className="d-flex" onSubmit={onSubmitSearchMaDH} >
+                                <FormControl
+                                    style={{width:'200px'}}
+                                    type="search"
+                                    placeholder="Tìm kiếm theo mã số"
+                                    aria-label="Search"
+                                    name="searchMaDonHang"
+                                    value={maDH}
+                                    onChange={(e) => setMaDH(e.target.value)}
+                                    
+                                />
+                                <Button type='submit'> <span style={{ color: 'white' }}>
+                                    <i className="fas fa-search"></i>
+                                </span></Button>
+                            </Form>
                             </div>
+                            <div className="d-flex flex-row" style={{flex:'4'}}>                            
+                            <div style={{flex:'1', textAlign:'center'}}>
+                            <Button  variant="info" style={{flex:'1'}}
+                            onClick={() =>
+                                history.push(`/employee/order/status/0`)
+                              }
+                            >Chưa xác nhận</Button>
+                            </div>
+                            <div style={{flex:'1', textAlign:'center'}}>
+                            <Button  variant="info" 
+                            onClick={() =>
+                                history.push(`/employee/order/status/1`)
+                              }
+                            >Đã xác nhận</Button>
+                            </div>
+                            <div style={{flex:'1', textAlign:'center'}}>
+                            <Button  variant="info" style={{flex:'1'}}
+                            onClick={() =>
+                                history.push(`/employee/order/status/2`)
+                              }
+                            >Đang giao</Button>
+                            </div>
+                            <div style={{flex:'1', textAlign:'center'}}>
+                            <Button  variant="info" style={{flex:'1'}}
+                            onClick={() =>
+                                history.push(`/employee/order/status/3`)
+                              }
+                            >Đã giao</Button>
+                            </div>
+                            <div style={{flex:'1', textAlign:'center'}}>
+                            <Button  variant="info" style={{flex:'1'}}
+                            onClick={() =>
+                                history.push(`/employee/order/status/4`)
+                              }
+                            >Đã hủy</Button>
+                            </div>
+                            </div>                            
                     </div>
                     <ManageOrders />
                 </Col>

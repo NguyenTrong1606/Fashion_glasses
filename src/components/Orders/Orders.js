@@ -81,12 +81,19 @@ const ShowMyOrders =() =>{
                     })
                 }
               >Xem chi tiết</Button></td>
-              <td><Button variant="danger" onClick={() =>
+              <td>{order.status===0?<Button variant="danger" onClick={() =>
                             delOrder(order.id_order)
                         }>
                     <i className="far fa-trash-alt fa-x"   
                     ></i>
-                  </Button>
+                  </Button>:
+                  <Button variant="secondary" disabled onClick={() =>
+                    delOrder(order.id_order)
+                    }>
+                    <i className="far fa-trash-alt fa-x"   
+                    ></i>
+                </Button>
+                }
               </td>
             </tr>
             {

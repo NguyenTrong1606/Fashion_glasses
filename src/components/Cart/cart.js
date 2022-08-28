@@ -161,14 +161,14 @@ import {
                 gender ={user.gender}
                 role ={user.role}/>
         <Container fluid style={{ margin: '110px 20px 10px', minHeight: '85vh' }}>
-        <Row className="d-flex flex-row">
+        {/* <Row className="d-flex flex-row">
           <div style={{flex:'9'}}></div>
           <Button variant="success" style={{flex:'1', color:'white', margin:'0 40px'}}
             onClick={() =>
               history.push('/account/my-order')
             }
           >Danh Sách Đơn Hàng</Button>
-        </Row>
+        </Row> */}
         <Row style={{marginTop: '30px'}}>
 
         <Col md ={3} className="panel panel-danger" style={{border:'green solid 1px', padding:'10px'}}>
@@ -230,6 +230,7 @@ import {
           <Card.Title className="border-bottom p-3 mb-0 d-flex flex-row ">
                 <h3 style={{color:'green', margin:'10px auto'}} >THÔNG TIN GIỎ HÀNG</h3>
           </Card.Title>
+          {itemsCart.length==0?<div style={{color: '#1699c1', fontSize:'32px', fontWeight:'600', minHeight:'100px', lineHeight:'100px', textAlign:'center'}}>Không có sản phẩm trong giỏ hàng</div>:<>
           <Card.Body className="show-item">
             <Table bordered>
               <thead>
@@ -280,12 +281,10 @@ import {
               <h4 style={{flex:'1', color:'red'}}>{(+tongTien-giamGia).toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</h4>
             </div>
 
-            {itemsCart.length==0? <Button type="submit" disabled variant="dark" style={{width:'200px', margin:'0 auto 20px'}}>Đặt Hàng</Button>
-            : <Button type="submit" variant="danger" style={{width:'200px', margin:'0 auto 20px'}}>Đặt Hàng</Button>              
-            }
-
-
+            <Button type="submit" variant="danger" style={{width:'200px', margin:'0 auto 20px'}}>Đặt Hàng</Button>              
           </Form>
+
+          </>}  
         </Card>
 
 

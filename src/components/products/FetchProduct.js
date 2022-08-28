@@ -98,6 +98,7 @@ const FetchProduct = () => {
   return (
     <>
       <Row style={{ backgroundColor: "#F0F8FF" }}>
+        <h2 style={{color:'orange'}}>Tất cả sản phẩm</h2>
         <Row style={{ margin: "20px 0" }}>{displayTodo}</Row>
 
         {pageCount > 1 ? (
